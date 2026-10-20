@@ -84,8 +84,12 @@ cities:
       basis: "年平均常住人口 =（上年末 + 本年末）/ 2"
       source_hint: "北京市统计局 统计年鉴/统计公报"
     area:
+      kind: constant
       basis: "全市面积"
       reference_km2: 16410.54
+      source_name: "北京市统计局《北京统计年鉴》行政区划"
+      source_url: "https://tjj.beijing.gov.cn/tjsj_31433/tjnj_31441/bjtjnj_31442/"
+      as_of: 2024
     note: null
 
   - code: SHA
@@ -98,8 +102,12 @@ cities:
       basis: "年平均常住人口 =（上年末 + 本年末）/ 2"
       source_hint: "上海市统计局 统计年鉴/统计公报"
     area:
+      kind: constant
       basis: "全市面积"
       reference_km2: 6340.5
+      source_name: "上海市统计局《上海统计年鉴》行政区划"
+      source_url: "https://tjj.sh.gov.cn/tjnj/index.html"
+      as_of: 2024
     note: null
 
   - code: SZX
@@ -112,8 +120,11 @@ cities:
       basis: "年平均常住人口 =（上年末 + 本年末）/ 2"
       source_hint: "深圳市统计局 统计年鉴/统计公报"
     area:
-      basis: "全市陆域面积"
+      basis: "全市陆域面积；2024 年起含深汕特别合作区"
       reference_km2: 1997.47
+      source_name: "深圳市统计局《深圳统计年鉴》"
+      source_url: "https://tjj.sz.gov.cn/zwgk/zfxxgkml/tjsj/tjnj/index.html"
+      as_of: 2025
     note: "2024 年起含深汕特别合作区（陆域 468.3 km²）"
     breaks:
       - from_year: 2024

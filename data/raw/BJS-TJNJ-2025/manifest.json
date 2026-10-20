@@ -1,0 +1,39 @@
+{
+  "source_id": "BJS-TJNJ-2025",
+  "dataset_key": "BJS-TJNJ",
+  "meta": {
+    "id": "BJS-TJNJ-2025",
+    "dataset_key": "BJS-TJNJ",
+    "city_code": "BJS",
+    "indicator": "gdp+population",
+    "organization": "北京市统计局",
+    "dataset_title": "北京统计年鉴2025 — 表2-1 地区生产总值、表3-2 常住人口",
+    "table_id": "C0201.xls / C0302.xls",
+    "url": "https://nj.tjj.beijing.gov.cn/nj/main/2025-tjnj/zk/e/html/C0201.xls",
+    "vintage": "2025",
+    "published_at": null,
+    "acquisition": "auto",
+    "notes": "生产总值 1978–上年；人口为年末常住人口"
+  },
+  "urls": [
+    "https://nj.tjj.beijing.gov.cn/nj/main/2025-tjnj/zk/e/html/C0201.xls",
+    "https://nj.tjj.beijing.gov.cn/nj/main/2025-tjnj/zk/e/html/C0302.xls"
+  ],
+  "http_status": 200,
+  "etag": "\"4e00-646447557f23c\"",
+  "last_modified": "Fri, 19 Dec 2025 02:01:40 GMT",
+  "fetched_at": "2026-10-20T22:02:36+08:00",
+  "acquisition": "auto",
+  "files": [
+    {
+      "name": "gdp.xls",
+      "sha256": "4e300438379a2066b73669dec3a555d9d2faf5f5c89ac8f2ebf4b9fa6a4eff82",
+      "bytes": 19968
+    },
+    {
+      "name": "population.xls",
+      "sha256": "70302861b67fe20fe38b539de7a091f32494feb34cb1b47bfa6de35f70168e6e",
+      "bytes": 22528
+    }
+  ]
+}

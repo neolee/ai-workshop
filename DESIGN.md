@@ -423,7 +423,7 @@ showcases/
     └── qa/S1.md … S7.md      # 每步验收记录
 ```
 
-依赖（最小集）：`httpx`、`polars`、`openpyxl`、`pyyaml`；开发依赖 `pytest`。PDF 解析（如 `pdfplumber`）仅在东京/中国源确实需要时引入。选型理由见 §15。
+依赖（最小集）：`httpx`、`polars`、`openpyxl`、`xlrd`、`pypdf`、`pyyaml`；开发依赖 `pytest`。PDF 解析（如 `pdfplumber`）仅在东京/中国源确实需要时引入。选型理由见 §15。
 
 ---
 
@@ -647,6 +647,8 @@ uv run citygdp all                    # 全流程
 | 数据处理 | `polars` | `pandas` | 需求方指定 polars；S2 解析为纯 Python，尚未依赖该库 |
 | Excel 读写 | `openpyxl` | `xlsxwriter` | 需要单元格格式、冻结窗格、隔块底色；S7 使用 |
 | 配置 | `PyYAML` | `ruamel.yaml` | 标准 YAML，无特殊需求 |
+| 旧版 Excel | `xlrd` | 先转 xlsx | 北京年鉴表为 BIFF `.xls`，openpyxl 不支持 |
+| PDF 文本 | `pypdf` | `pdfplumber` | 深圳年鉴为整本 PDF，仅需文本层，`pypdf` 更轻 |
 | CLI | `argparse`（标准库） | `typer` / `click` | 子命令结构简单，不引入额外依赖 |
 | 测试 | `pytest` | `unittest` | fixtures 与断言表达力更好 |
 | HTML 解析 | 待定（S4/S5） | `selectolax` / `BeautifulSoup` | 能走 API 就不解析 HTML |

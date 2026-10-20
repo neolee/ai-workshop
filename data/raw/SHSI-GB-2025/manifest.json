@@ -1,0 +1,33 @@
+{
+  "source_id": "SHSI-GB-2025",
+  "dataset_key": "SHSI-GB",
+  "meta": {
+    "id": "SHSI-GB-2025",
+    "dataset_key": "SHSI-GB",
+    "city_code": "SHA",
+    "indicator": "gdp+population",
+    "organization": "上海市统计局",
+    "dataset_title": "2025年上海市国民经济和社会发展统计公报",
+    "table_id": null,
+    "url": "https://tjj.sh.gov.cn/tjgb/20260330/e0772941e8e041eaaad2df850b44ef98.html",
+    "vintage": "2025",
+    "published_at": "2026-03-30",
+    "acquisition": "auto",
+    "notes": "初步核算数；年末常住人口"
+  },
+  "urls": [
+    "https://tjj.sh.gov.cn/tjgb/20260330/e0772941e8e041eaaad2df850b44ef98.html"
+  ],
+  "http_status": 200,
+  "etag": "W/\"69ca18d9-b4b1\"",
+  "last_modified": "Mon, 30 Mar 2026 06:31:53 GMT",
+  "fetched_at": "2026-10-20T22:01:53+08:00",
+  "acquisition": "auto",
+  "files": [
+    {
+      "name": "bulletin.html",
+      "sha256": "53208d64119891cc374e6b70ede45f537667bc4152d71da1111609d75641348a",
+      "bytes": 46257
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "source_id": "BJS-GB-2025",
+  "dataset_key": "BJS-GB",
+  "meta": {
+    "id": "BJS-GB-2025",
+    "dataset_key": "BJS-GB",
+    "city_code": "BJS",
+    "indicator": "gdp+population",
+    "organization": "北京市统计局",
+    "dataset_title": "北京市2025年国民经济和社会发展统计公报",
+    "table_id": null,
+    "url": "https://tjj.beijing.gov.cn/tjsj_31433/tjgb_31445/ndgb_31446/202603/t20260326_4566469.html",
+    "vintage": "2025",
+    "published_at": "2026-03-26",
+    "acquisition": "auto",
+    "notes": "初步核算数；年末常住人口"
+  },
+  "urls": [
+    "https://tjj.beijing.gov.cn/tjsj_31433/tjgb_31445/ndgb_31446/202603/t20260326_4566469.html"
+  ],
+  "http_status": 200,
+  "etag": null,
+  "last_modified": null,
+  "fetched_at": "2026-10-20T22:02:36+08:00",
+  "acquisition": "auto",
+  "files": [
+    {
+      "name": "bulletin.html",
+      "sha256": "4eaf3cd2253df8336170e344762c5b37480899738790ae59c92e19022d649a72",
+      "bytes": 68573
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "source_id": "SHSI-TJNJ-2025",
+  "dataset_key": "SHSI-TJNJ",
+  "meta": {
+    "id": "SHSI-TJNJ-2025",
+    "dataset_key": "SHSI-TJNJ",
+    "city_code": "SHA",
+    "indicator": "gdp+population",
+    "organization": "上海市统计局",
+    "dataset_title": "2025年上海统计年鉴 — 表3.1 上海市生产总值、表2.1 户数人口",
+    "table_id": "C0301 / C0201",
+    "url": "https://tjj.sh.gov.cn/tjnj/tjnj2025.htm",
+    "vintage": "2025",
+    "published_at": null,
+    "acquisition": "auto",
+    "notes": "生产总值 1978–上年；人口为年末常住人口"
+  },
+  "urls": [
+    "https://tjj.sh.gov.cn/tjnj/2025tjnj/C03/C0301B.htm",
+    "https://tjj.sh.gov.cn/tjnj/2025tjnj/C02/C0201B.htm"
+  ],
+  "http_status": 200,
+  "etag": "W/\"69899d75-8354\"",
+  "last_modified": "Mon, 09 Feb 2026 08:40:21 GMT",
+  "fetched_at": "2026-10-20T22:01:51+08:00",
+  "acquisition": "auto",
+  "files": [
+    {
+      "name": "gdp.htm",
+      "sha256": "bbb29e7eb48ced587a04d9656203a6b71f317b2a8580802920fb8c425f9b0220",
+      "bytes": 33620
+    },
+    {
+      "name": "population.htm",
+      "sha256": "eaf746de0d58becc0ded4d229f5ce89fa535d9f9a4d5fb5f2107cc6c5168da07",
+      "bytes": 42624
+    }
+  ]
+}

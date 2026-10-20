@@ -1,0 +1,33 @@
+{
+  "source_id": "SZX-GB-2025",
+  "dataset_key": "SZX-GB",
+  "meta": {
+    "id": "SZX-GB-2025",
+    "dataset_key": "SZX-GB",
+    "city_code": "SZX",
+    "indicator": "gdp+population",
+    "organization": "深圳市统计局",
+    "dataset_title": "深圳市2025年国民经济和社会发展统计公报",
+    "table_id": null,
+    "url": "https://tjj.sz.gov.cn/zwgk/zfxxgkml/tjsj/tjgb/content/post_12803919.html",
+    "vintage": "2025",
+    "published_at": "2026-05-25",
+    "acquisition": "auto",
+    "notes": "初步核算数；年末常住人口"
+  },
+  "urls": [
+    "https://tjj.sz.gov.cn/zwgk/zfxxgkml/tjsj/tjgb/content/post_12803919.html"
+  ],
+  "http_status": 200,
+  "etag": null,
+  "last_modified": null,
+  "fetched_at": "2026-10-20T22:04:39+08:00",
+  "acquisition": "auto",
+  "files": [
+    {
+      "name": "bulletin.html",
+      "sha256": "79b1d6e2306cc6967e6d5cfc9c1bdea0f595bb5fe90285e22b2b8ac572825374",
+      "bytes": 77184
+    }
+  ]
+}

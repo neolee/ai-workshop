@@ -1,0 +1,39 @@
+{
+  "source_id": "SZX-TJNJ-2025",
+  "dataset_key": "SZX-TJNJ",
+  "meta": {
+    "id": "SZX-TJNJ-2025",
+    "dataset_key": "SZX-TJNJ",
+    "city_code": "SZX",
+    "indicator": "gdp+population",
+    "organization": "深圳市统计局",
+    "dataset_title": "深圳统计年鉴2025 — 表2-2 地区生产总值、表3-2 人口",
+    "table_id": "2-2 / 3-2",
+    "url": "https://tjj.sz.gov.cn/attachment/1/1753/1753070/12647191.pdf",
+    "vintage": "2025",
+    "published_at": null,
+    "acquisition": "auto",
+    "notes": "整本 PDF 的文本层抽取；生产总值为万元，人口为年末常住人口（万人）"
+  },
+  "urls": [
+    "https://tjj.sz.gov.cn/attachment/1/1753/1753070/12647191.pdf",
+    "https://tjj.sz.gov.cn/attachment/1/1753/1753070/12647191.pdf#text"
+  ],
+  "http_status": 200,
+  "etag": "\"6abb88e8-bb8f4d\"",
+  "last_modified": "Tue, 29 Sep 2026 09:46:16 GMT",
+  "fetched_at": "2026-10-20T22:04:32+08:00",
+  "acquisition": "auto",
+  "files": [
+    {
+      "name": "shenzhen.pdf",
+      "sha256": "1420ad6703e523da7912d8929a27d9e481110e5942c6466143edd77f0ded931e",
+      "bytes": 12291917
+    },
+    {
+      "name": "shenzhen.txt",
+      "sha256": "e208f56f294cf7bc1ad9cec1482ef875b8c165c89da3ddd692dcd74d173e63ab",
+      "bytes": 752749
+    }
+  ]
+}
