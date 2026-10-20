@@ -16,10 +16,10 @@ cities:
     area:
       kind: constant
       basis: "5 县陆地面积"
-      reference_km2: 778.2
+      reference_km2: 778.165
       note: "含水域口径约 1,223 km²，不采用"
-      source_name: "U.S. Census Bureau, Gazetteer Files (counties)"
-      source_url: "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/"
+      source_name: "U.S. Census Bureau, 2020 Gazetteer Files — counties（ALAND 五县合计）"
+      source_url: "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2020_Gazetteer/2020_Gaz_counties_national.zip"
       as_of: 2020
     note: "2000 年无县级 GDP 数据（BEA 序列自 2001 年起）"
 
@@ -36,8 +36,9 @@ cities:
       kind: constant
       basis: "大伦敦陆地面积"
       reference_km2: 1572.0
-      source_name: "ONS, Standard Area Measurements (SAME)"
-      source_url: "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/standardareameasurements"
+      note: "大伦敦 33 个自治市陆地面积合计；数值待用 SAM 原始数据复核"
+      source_name: "ONS, UK Standard Area Measurements (SAM)"
+      source_url: "https://www.ons.gov.uk/methodology/geography/geographicalproducts/otherproducts/ukstandardareameasurementssam"
       as_of: 2021
     note: null
 
@@ -51,8 +52,12 @@ cities:
       basis: "都推计人口，10 月 1 日"
       source_hint: "東京都総務局統計部 推計人口"
     area:
+      kind: constant
       basis: "都全域面积（含岛屿）"
       reference_km2: 2194.07
+      source_name: "東京都総務局統計部「東京都の面積」"
+      source_url: "https://www.toukei.metro.tokyo.lg.jp/"
+      as_of: 2024
     note: "年度值（4 月–翌年 3 月），按起始年对齐；最新为令和 5 年度（2023）"
 
   - code: SGP

@@ -48,3 +48,9 @@ anchors:
     value: 656291000000
     unit: GBP
     source: "ONS 区域 GDP，Table 5，London（ITL1）"
+  - city: TYO
+    year: 2023
+    indicator: gdp_lcu
+    value: 125018533000000
+    unit: JPY
+    source: "都民経済計算年報 令和5年度、統合勘定(1) 都内総生産（生産側、名目）"

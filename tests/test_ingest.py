@@ -93,9 +93,10 @@ def test_duplicate_fact_in_one_batch_is_deduped(conn):
 def test_constant_areas_written(conn):
     cfg = load_config(ROOT)
     count = ingest_constant_areas(conn, cfg)
-    assert count == 18  # NYC + LDN，各 9 个年份
+    assert count == 27  # NYC + LDN + TYO，各 9 个年份
     rows = conn.execute(
         "SELECT entity_code, year, value FROM fact WHERE indicator='area_km2'"
     ).fetchall()
-    assert {r["value"] for r in rows if r["entity_code"] == "NYC"} == {778.2}
+    assert {r["value"] for r in rows if r["entity_code"] == "NYC"} == {778.165}
     assert {r["value"] for r in rows if r["entity_code"] == "LDN"} == {1572.0}
+    assert {r["value"] for r in rows if r["entity_code"] == "TYO"} == {2194.07}

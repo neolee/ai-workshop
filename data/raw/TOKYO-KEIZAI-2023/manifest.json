@@ -1,0 +1,39 @@
+{
+  "source_id": "TOKYO-KEIZAI-2023",
+  "dataset_key": "TOKYO-KEIZAI",
+  "meta": {
+    "id": "TOKYO-KEIZAI-2023",
+    "dataset_key": "TOKYO-KEIZAI",
+    "city_code": "TYO",
+    "indicator": "gdp+population",
+    "organization": "東京都総務局統計部（Tokyo Metropolitan Government）",
+    "dataset_title": "都民経済計算年報 — 統合勘定(1) と 関連指標(1)",
+    "table_id": "kk23qv0110 / kk23qv0410",
+    "url": "https://www.toukei.metro.tokyo.lg.jp/keizaik/nenpou/kkne-index.htm",
+    "vintage": "2023",
+    "published_at": null,
+    "acquisition": "auto",
+    "notes": "日本年度（4月-翌年3月），按起始年对齐；最新版年報覆盖最近 13 个年度"
+  },
+  "urls": [
+    "https://www.toukei.metro.tokyo.lg.jp/keizaik/nenpou/kk23qv0110.csv",
+    "https://www.toukei.metro.tokyo.lg.jp/keizaik/nenpou/kk23qv0410.csv"
+  ],
+  "http_status": 200,
+  "etag": "W/\"db7-64de641f5d658\"",
+  "last_modified": "Thu, 26 Mar 2026 05:00:04 GMT",
+  "fetched_at": "2026-10-20T21:52:01+08:00",
+  "acquisition": "auto",
+  "files": [
+    {
+      "name": "gdp.csv",
+      "sha256": "f9651514cc8724df176778a016d82a6379fcddf3164b7b5730f7cfe74683ff9c",
+      "bytes": 3511
+    },
+    {
+      "name": "population.csv",
+      "sha256": "5adf4f99acdb9e12ef80c465abbbbe62644ea521f57d4041da20b574b90ed934",
+      "bytes": 6700
+    }
+  ]
+}

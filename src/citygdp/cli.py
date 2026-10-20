@@ -23,6 +23,9 @@ _KNOWN_MISSING: frozenset[tuple[str, int]] = frozenset(
         ("NYC", 2000),
         ("NYC", 2025),
         ("LDN", 2025),
+        ("TYO", 2000),
+        ("TYO", 2005),
+        ("TYO", 2010),
         ("TYO", 2024),
         ("TYO", 2025),
     }

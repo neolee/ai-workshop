@@ -8,6 +8,7 @@ from .census import CensusAdapter
 from .hkcsd import HkCsdAdapter
 from .ons import OnsAdapter
 from .singstat import SingStatAdapter
+from .tokyo import TokyoAdapter
 from .worldbank import WorldBankAdapter
 
 ADAPTERS: dict[str, type] = {
@@ -17,6 +18,7 @@ ADAPTERS: dict[str, type] = {
     "bea": BeaAdapter,
     "census": CensusAdapter,
     "ons": OnsAdapter,
+    "tokyo": TokyoAdapter,
 }
 
 __all__ = ["ADAPTERS", "Adapter", "Fact", "Fetched", "SourceMeta"]
