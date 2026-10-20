@@ -111,17 +111,36 @@
 
 #### 3.2.5 SingStat（新加坡）
 
-- GDP：`https://tablebuilder.singstat.gov.sg/api/table/tabledata/M014871`
-  - **已确认该表为季度表**（Expenditure on GDP at Current Prices, Quarterly）。
-  - 年度值 = 四个季度**加总**（现价加总成立），并校验与官方年度发布一致。
-- 人口：`https://tablebuilder.singstat.gov.sg/api/table/tabledata/M810001`（总人口）。
-- 解析：JSON 中 `Data.row` 为系列，列名形如 `2025 1Q`；按年聚合。
+三张表，均走 `tablebuilder.singstat.gov.sg/api/table/tabledata/{table}`，无需 key：
+
+| 表号 | 内容 | 行（rowText） | 单位 |
+|---|---|---|---|
+| M014871 | 现价 GDP（**季度**） | `GDP At Current Market Prices` | Million Dollars |
+| M810001 | 人口（年度） | `Total Population` | Number |
+| M890151 | 土地面积（年度，12 月） | `Total Land Area` | Square Kilometre |
+
+- **M014871 是季度表**（`INIT.md` 未说明这一点）：年度值由四个季度**加总**得到。不足四个季度的年份（如当年只到 Q2）跳过，避免把部分年份当全年。
+- 版本取 `Data.dataLastUpdated`（`DD/MM/YYYY`），转 ISO 后写入 `source_id`。
+- 人口用总人口（含非居民），符合 SPEC §6.3。
 
 #### 3.2.6 香港 C&SD
 
-- GDP：表 **310-31002**「按主要开支组成部分划分的本地生产总值 — 以当时市价计算」，单位百万港元。
-- 人口：表 110-01001 或统计摘要年中人口。
-- 获取：优先 `api/get.php?id=...`，回退 `web_table.html?id=...&download_csv=1`。
+三张表，均走 `api/get.php?id={table}&lang=en&full_series=1`，无需 key、无需 `param`：
+
+| 表号 | 内容 | 过滤条件 | 单位 |
+|---|---|---|---|
+| 310-31002 | 现价 GDP（开支法） | `GDP_COMPONENTDesc=Total`、`freq=Y`、`svDesc=HK$ million` | 百万港元 |
+| 110-01001 | 人口（半年表） | `SEXDesc/AGEDesc=Total`、`period` 以 `06` 结尾、`svDesc` 以 `Number` 开头 | 千人 |
+| 110-02001 | 土地面积（分区） | `DCDesc=Total`、`sv=LA` | 平方公里 |
+
+**两个坑（已踩过）**：
+
+1. 310-31002 的 `Total` 行同时包含「百万港元」和「同比 %」两套 `figure`，二者 `sv` 都是 `CUR`，**只能按 `svDesc` 区分**；否则会把 6.9% 当成 6.9 百万港元。
+2. 110-01001 的总人口行与占比行 `sv` 同为 `POP`，同样必须按 `svDesc` 过滤（否则得到 100）。
+
+**土地面积口径**：110-02001 的 `Total` 为**分区土地面积合计（不含水塘等水域）**，2024 年为 1,089.72 km²；香港常用的 1,114.57 km² 为含水域总面积。按 SPEC「陆地面积」规则采用前者，差异约 2.3%。
+
+**2000 年面积**：该表自 2002 年起，2000 年用 2002 年值回填并标记 `provisional`（年变化 <1%），已记入决策 DR-14。
 
 #### 3.2.7 东京都
 
@@ -165,19 +184,40 @@ data/raw/<source_id>/
 
 ```json
 {
-  "source_id": "BEA-CAGDP1-2026-02-05",
-  "url": "https://apps.bea.gov/regional/zip/CAGDP1.zip",
-  "fetched_at": "2026-10-20T20:40:12+08:00",
+  "source_id": "HKCSD-310-31002-2025",
+  "dataset_key": "HKCSD-310-31002",
+  "meta": {
+    "id": "HKCSD-310-31002-2025",
+    "dataset_key": "HKCSD-310-31002",
+    "city_code": "HKG",
+    "indicator": "gdp",
+    "organization": "Census and Statistics Department, Hong Kong SAR",
+    "dataset_title": "Gross Domestic Product (GDP) by major expenditure component at current market prices",
+    "table_id": "310-31002",
+    "url": "https://www.censtatd.gov.hk/api/get.php?id=310-31002&lang=en&full_series=1",
+    "vintage": "2025",
+    "published_at": null,
+    "acquisition": "auto",
+    "notes": "数据版本以最新期间年度标识；无独立发布日期字段"
+  },
+  "urls": ["https://www.censtatd.gov.hk/api/get.php?id=310-31002&lang=en&full_series=1"],
   "http_status": 200,
-  "etag": "\"4748349ca396dc1:0\"",
-  "last_modified": "Thu, 05 Feb 2026 13:30:35 GMT",
-  "sha256": "95b49283df20772ded04ea53e1142955b8ade5e7f93047c0a3dfaf403b166fe1",
-  "bytes": 1928241,
-  "files": ["CAGDP1_NY_2001_2024.csv", "CAGDP1__definition.xml"],
+  "etag": "\"6a1f-5f0c\"",
+  "last_modified": "Tue, 04 Nov 2025 00:00:00 GMT",
+  "fetched_at": "2026-10-20T21:35:12+08:00",
   "acquisition": "auto",
-  "notes": null
+  "files": [
+    {"name": "310-31002.json", "sha256": "…", "bytes": 2077683}
+  ]
 }
 ```
+
+要点：
+
+- `meta` 完整保存 `SourceMeta`，使 `ingest` 可以完全离线重建。
+- 多文件来源（如世界银行 6 个 `{ISO}.json`）共用同一个 `manifest`，逐个文件记录哈希。
+- `dataset_key` 是去掉版本号的前缀，用于在 `ingest` 时清理该数据集的旧版本 fact。
+- `source.sha256`：单文件来源取其哈希；多文件来源取「文件名:哈希」拼接后的 SHA256，保证登记表每行都有指纹。
 
 ### 4.3 规则
 
@@ -327,24 +367,27 @@ showcases/
 │   ├── manual/<source_id>/… # 人工投递区
 │   └── db/city_gdp.sqlite   # 可重建
 ├── src/citygdp/
-│   ├── cli.py               # 命令入口
+│   ├── __init__.py
+│   ├── __main__.py          # python -m citygdp
+│   ├── cli.py               # 命令入口（doctor/fetch/ingest/…）
 │   ├── config.py            # 配置加载与校验
-│   ├── registry.py          # 来源登记表读写
-│   ├── http.py              # 统一请求：UA、重试、限速、缓存
-│   ├── db.py                # schema 初始化与连接
+│   ├── schema.sql           # DDL 唯一来源
+│   ├── db.py                # 建表、连接、健康检查
+│   ├── http.py              # 统一请求：UA、重试、限速
+│   ├── ingest.py            # 写 source / fact（含旧版本清理）
 │   ├── adapters/
-│   │   ├── base.py          # Adapter 协议：fetch() / parse()
+│   │   ├── base.py          # Fact / SourceMeta / Fetched / commit_raw
 │   │   ├── worldbank.py
-│   │   ├── bea.py
-│   │   ├── census.py
-│   │   ├── ons.py
 │   │   ├── singstat.py
 │   │   ├── hkcsd.py
-│   │   ├── tokyo.py
-│   │   └── china.py
-│   ├── build.py             # 派生指标
-│   ├── validate.py          # 规则校验
-│   └── export.py            # Excel / 说明输出
+│   │   ├── bea.py           # S3
+│   │   ├── census.py        # S3
+│   │   ├── ons.py           # S3
+│   │   ├── tokyo.py         # S4
+│   │   └── china.py         # S5
+│   ├── build.py             # 派生指标（S6）
+│   ├── validate.py          # 规则校验（S6）
+│   └── export.py            # Excel / 说明输出（S7）
 ├── scripts/
 │   └── run_all.sh           # uv run citygdp all 的快捷入口
 ├── tests/
@@ -357,7 +400,7 @@ showcases/
     └── qa/S1.md … S7.md      # 每步验收记录
 ```
 
-依赖（最小集）：`httpx`、`pandas`、`openpyxl`、`pyyaml`；开发依赖 `pytest`。PDF 解析（如 `pdfplumber`）仅在东京/中国源确实需要时引入。
+依赖（最小集）：`httpx`、`polars`、`openpyxl`、`pyyaml`；开发依赖 `pytest`。PDF 解析（如 `pdfplumber`）仅在东京/中国源确实需要时引入。选型理由见 §15。
 
 ---
 
@@ -569,3 +612,21 @@ uv run citygdp all                    # 全流程
 | DD-09 | 交付物单表纵向堆叠 | 4 个分表 | 便于 4 指标 × 8 城横向比较；减少翻表 |
 | DD-10 | `fact` 唯一键不含 `source_id` | 含 `source_id` | 在数据库层强制「一格一值」，多源冲突在入库时即暴露 |
 | DD-11 | 指标名每行重复、不合并单元格 | 合并指标列 | 保证交付表可被 pandas/CSV 直接读取，不牺牲可解析性 |
+| DD-12 | 数据处理库用 polars | pandas | 需求方指定；本项目计算量小，polars 主要用于后续分析层 |
+
+---
+
+## 15. 依赖选型
+
+| 用途 | 选型 | 备选 | 说明 |
+|---|---|---|---|
+| HTTP | `httpx` | `requests` | 连接池、超时与重试语义清晰；已在 S2 使用 |
+| 数据处理 | `polars` | `pandas` | 需求方指定 polars；S2 解析为纯 Python，尚未依赖该库 |
+| Excel 读写 | `openpyxl` | `xlsxwriter` | 需要单元格格式、冻结窗格、隔块底色；S7 使用 |
+| 配置 | `PyYAML` | `ruamel.yaml` | 标准 YAML，无特殊需求 |
+| CLI | `argparse`（标准库） | `typer` / `click` | 子命令结构简单，不引入额外依赖 |
+| 测试 | `pytest` | `unittest` | fixtures 与断言表达力更好 |
+| HTML 解析 | 待定（S4/S5） | `selectolax` / `BeautifulSoup` | 能走 API 就不解析 HTML |
+| PDF 解析 | 待定（S4/S5） | `pdfplumber` | 仅在中国年鉴或东京都年报确需时引入 |
+
+原则：能走官方 API 就不引解析库；能用手工下载 + 简单解析就不引入重型依赖。新增依赖前先在 PLAN 对应步骤说明理由。

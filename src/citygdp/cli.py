@@ -1,6 +1,7 @@
 """命令行入口。
 
-S1 只实现 `doctor`；其余命令保留骨架，在后续步骤逐个落地。
+已实现：doctor、fetch、ingest。
+待实现：build、validate、export（S6–S7）。
 """
 
 from __future__ import annotations
@@ -10,7 +11,26 @@ import sys
 import unicodedata
 
 from . import __version__, db
-from .config import ConfigError, load_config
+from .adapters import ADAPTERS
+from .adapters.base import latest_fetch
+from .config import Config, ConfigError, load_config
+from .http import FetchError, HttpClient
+from .ingest import ingest_fetched, register_cities
+
+# 交付指标的顺序即交付表中指标块的顺序（SPEC.md §8.1）
+_KNOWN_MISSING: frozenset[tuple[str, int]] = frozenset(
+    {
+        ("NYC", 2000),
+        ("NYC", 2025),
+        ("LDN", 2025),
+        ("TYO", 2024),
+        ("TYO", 2025),
+    }
+)
+
+
+def _known_missing(city_code: str, year: int) -> bool:
+    return (city_code, year) in _KNOWN_MISSING
 
 
 # ---------------------------------------------------------------- 显示辅助
@@ -23,6 +43,18 @@ def _display_width(text: str) -> int:
 def _pad(text: str, width: int, align: str = "left") -> str:
     gap = max(0, width - _display_width(text))
     return (" " * gap + text) if align == "right" else (text + " " * gap)
+
+
+def _resolve_sources(value: str) -> list[str]:
+    if value.strip() == "all":
+        return list(ADAPTERS)
+    names = [x.strip() for x in value.split(",") if x.strip()]
+    unknown = [n for n in names if n not in ADAPTERS]
+    if unknown:
+        raise SystemExit(f"未知数据源：{unknown}；可选 {sorted(ADAPTERS)} 或 all")
+    if not names:
+        raise SystemExit("--source 不能为空")
+    return names
 
 
 # ---------------------------------------------------------------- doctor
@@ -80,17 +112,15 @@ def cmd_doctor(_args: argparse.Namespace) -> int:
         print(f"[数据库] {rel} （{'新建' if created else '已存在'}）")
         print(f"       表     {', '.join(db.table_names(conn))}")
         print(f"       行数   " + "  ".join(f"{k}={v}" for k, v in counts.items()))
+        by_ind = _fact_breakdown(conn)
+        if by_ind:
+            print(f"       明细   " + "  ".join(f"{k}={v}" for k, v in by_ind))
         fk_ok = db.foreign_key_ok(conn)
         print(f"       外键   {'通过' if fk_ok else '存在违规'}")
         ok = ok and fk_ok
 
         filled = sum(1 for c in cfg.cities for y in cfg.years if (c.code, y) in coverage)
-        expected = sum(
-            1
-            for c in cfg.cities
-            for y in cfg.years
-            if not _known_missing(c.code, y)
-        )
+        expected = sum(1 for c in cfg.cities for y in cfg.years if not _known_missing(c.code, y))
         print(f"       覆盖   {filled}/{expected}（按 SPEC §4.3 的可得性基线）")
     finally:
         conn.close()
@@ -100,20 +130,62 @@ def cmd_doctor(_args: argparse.Namespace) -> int:
     return 0 if ok else 1
 
 
-# SPEC §4.3 明确的不可得组合；S2–S5 完成后应与此完全一致
-_KNOWN_MISSING: frozenset[tuple[str, int]] = frozenset(
-    {
-        ("NYC", 2000),
-        ("NYC", 2025),
-        ("LDN", 2025),
-        ("TYO", 2024),
-        ("TYO", 2025),
-    }
-)
+def _fact_breakdown(conn) -> list[tuple[str, int]]:
+    try:
+        rows = conn.execute(
+            "SELECT indicator, COUNT(*) AS n FROM fact GROUP BY indicator ORDER BY indicator"
+        ).fetchall()
+    except Exception:  # noqa: BLE001 - 诊断信息，失败不应影响主流程
+        return []
+    return [(r["indicator"], r["n"]) for r in rows]
 
 
-def _known_missing(city_code: str, year: int) -> bool:
-    return (city_code, year) in _KNOWN_MISSING
+# ---------------------------------------------------------------- fetch
+
+def cmd_fetch(args: argparse.Namespace) -> int:
+    cfg = load_config()
+    raw_root = cfg.paths["raw"]
+    raw_root.mkdir(parents=True, exist_ok=True)
+    names = _resolve_sources(args.source)
+
+    print(f"抓取 {len(names)} 个数据源 → {raw_root.relative_to(cfg.root)}")
+    with HttpClient() as client:
+        for name in names:
+            adapter = ADAPTERS[name]()
+            fetched_list = adapter.fetch(client, raw_root)
+            for fetched in fetched_list:
+                print(f"  [{name}] {fetched.meta.id}  {len(fetched.files)} 文件")
+    print("完成。")
+    return 0
+
+
+# ---------------------------------------------------------------- ingest
+
+def cmd_ingest(args: argparse.Namespace) -> int:
+    cfg = load_config()
+    db_path = cfg.paths["db"]
+    db.init_db(db_path)
+    conn = db.connect(db_path)
+    names = _resolve_sources(args.source)
+    total = 0
+    try:
+        register_cities(conn, cfg)
+        for name in names:
+            adapter = ADAPTERS[name]()
+            for key in adapter.dataset_keys:
+                fetched = latest_fetch(cfg.paths["raw"], key)
+                if fetched is None:
+                    print(f"  [{name}] {key}: 无原始数据，跳过（先执行 fetch）")
+                    continue
+                facts = adapter.parse(fetched)
+                count = ingest_fetched(conn, fetched, facts)
+                total += count
+                print(f"  [{name}] {fetched.meta.id}  fact={count}")
+        counts = db.row_counts(conn)
+        print("入库完成：" + "  ".join(f"{k}={v}" for k, v in counts.items()))
+    finally:
+        conn.close()
+    return 0 if total else 1
 
 
 # ---------------------------------------------------------------- 骨架命令
@@ -136,17 +208,21 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("doctor", help="环境、配置、数据库自检")
     p.set_defaults(func=cmd_doctor)
 
+    p = sub.add_parser("fetch", help="下载原始数据到 data/raw")
+    p.add_argument("--source", default="all", help="数据源名或逗号分隔列表，默认 all")
+    p.set_defaults(func=cmd_fetch)
+
+    p = sub.add_parser("ingest", help="解析原始数据写入 fact 表")
+    p.add_argument("--source", default="all", help="数据源名或逗号分隔列表，默认 all")
+    p.set_defaults(func=cmd_ingest)
+
     for name, help_text in (
-        ("fetch", "下载原始数据到 data/raw"),
-        ("ingest", "解析原始数据写入 fact 表"),
         ("build", "计算派生指标"),
         ("validate", "规则校验"),
         ("export", "导出交付物"),
         ("all", "全流程（fetch → export）"),
     ):
         p = sub.add_parser(name, help=help_text)
-        if name in ("fetch", "ingest"):
-            p.add_argument("--source", default="all", help="来源 ID 或 all")
         if name == "validate":
             p.add_argument("--rule", default=None, help="逗号分隔的规则编号，如 R2,R3")
         if name == "all":
@@ -165,6 +241,9 @@ def main(argv: list[str] | None = None) -> int:
         return 2
     except ConfigError as exc:
         print(f"[配置错误] {exc}", file=sys.stderr)
+        return 1
+    except FetchError as exc:
+        print(f"[抓取失败] {exc}", file=sys.stderr)
         return 1
 
 

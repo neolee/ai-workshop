@@ -1,0 +1,33 @@
+{
+  "source_id": "SINGSTAT-M890151-2026-02-16",
+  "dataset_key": "SINGSTAT-M890151",
+  "meta": {
+    "id": "SINGSTAT-M890151-2026-02-16",
+    "dataset_key": "SINGSTAT-M890151",
+    "city_code": "SGP",
+    "indicator": "area",
+    "organization": "Singapore Department of Statistics (SingStat)",
+    "dataset_title": "Land Area (As at December), Annual",
+    "table_id": "M890151",
+    "url": "https://tablebuilder.singstat.gov.sg/api/table/tabledata/M890151",
+    "vintage": "2026-02-16",
+    "published_at": "2026-02-16",
+    "acquisition": "auto",
+    "notes": null
+  },
+  "urls": [
+    "https://tablebuilder.singstat.gov.sg/api/table/tabledata/M890151"
+  ],
+  "http_status": 200,
+  "etag": null,
+  "last_modified": null,
+  "fetched_at": "2026-10-20T21:34:13+08:00",
+  "acquisition": "auto",
+  "files": [
+    {
+      "name": "M890151.json",
+      "sha256": "fd0bf4dacfe08c96b1d16b7cd65380867df2e936d0d2a38e446ce93cb1da6113",
+      "bytes": 2792
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+ "Data": {
+  "theme": "Economy & Prices",
+  "subject": "National Accounts",
+  "topic": "Expenditure on Gross Domestic Product (GDP)",
+  "id": "M014871",
+  "groupTitle": "Expenditure On Gross Domestic Product At Current Prices",
+  "title": "Expenditure On Gross Domestic Product At Current Prices, Quarterly",
+  "frequency": "Quarterly",
+  "adjustmentType": "Non-seasonally Adjusted",
+  "datasource": "SINGAPORE DEPARTMENT OF STATISTICS",
+  "footnote": "Data may not add up to the total due to rounding.  For more information on national accounts methodologies, please visit Singstat website (https://www.singstat.gov.sg/find-data/explore-data-themes/economy-prices/national-accounts/related-information) to view and download related publications.  Exports and Imports of Goods are recorded on a free-on-board (f.o.b.) basis, that is, the value of goods when sold abroad up to the point where the goods are deposited on board the outgoing vessel, aircraft or vehicle.",
+  "generatedBy": "SingStat Table Builder",
+  "dataLastUpdated": "11/08/2026",
+  "dateGenerated": "20/10/2026",
+  "offset": null,
+  "limit": "5000",
+  "sortBy": null,
+  "timeFilter": null,
+  "between": null,
+  "search": null,
+  "row": [
+   {
+    "seriesNo": "1",
+    "rowText": "GDP At Current Market Prices",
+    "uoM": "Million Dollars",
+    "footnote": "",
+    "columns": [
+     {
+      "key": "2023 1Q",
+      "value": "166415.4"
+     },
+     {
+      "key": "2023 2Q",
+      "value": "168935"
+     },
+     {
+      "key": "2023 3Q",
+      "value": "170990.7"
+     },
+     {
+      "key": "2023 4Q",
+      "value": "180056.9"
+     },
+     {
+      "key": "2024 1Q",
+      "value": "179753.3"
+     },
+     {
+      "key": "2024 2Q",
+      "value": "186169.2"
+     },
+     {
+      "key": "2024 3Q",
+      "value": "196391.9"
+     },
+     {
+      "key": "2024 4Q",
+      "value": "203183.1"
+     },
+     {
+      "key": "2026 1Q",
+      "value": "204554.1"
+     }
+    ]
+   }
+  ]
+ },
+ "DataCount": 1,
+ "StatusCode": 200,
+ "Message": ""
+}

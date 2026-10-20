@@ -11,7 +11,7 @@
 | [DESIGN.md](DESIGN.md) | 实现设计：采集通道、原始数据留存、数据库、目录结构 |
 | [PLAN.md](PLAN.md) | 分步实施计划（S1–S7） |
 
-**当前状态**：S1（骨架与口径固化）已完成，尚未取数。
+**当前状态**：S1（骨架与口径固化）、S2（世界银行 + 新加坡 + 香港）已完成，纽约、伦敦、东京、中国三市待 S3–S5。
 
 ## 快速开始
 
@@ -21,7 +21,7 @@ uv run citygdp doctor   # 配置与数据库自检
 uv run pytest -q        # 约束与配置测试
 ```
 
-后续命令在 S2 起可用：
+数据采集命令：
 
 ```bash
 uv run citygdp fetch --source all     # 下载原始数据到 data/raw

@@ -1,0 +1,115 @@
+{
+ "header": {
+  "status": {
+   "name": "Success",
+   "code": 0,
+   "description": "Query success",
+   "apiHelp": "https://www.censtatd.gov.hk/en/web_table.html?id=110-02001&api_popup=1"
+  },
+  "title": "Land area, land population and population density by District Council district",
+  "tablenote": [
+   "The geographical classification is by District Council district as defined by the Registration and Electoral Office applicable for that year. The boundaries of the Wan Chai district and Eastern district adopted since 2016 are different from those adopted in 2015 and earlier years. Therefore, figures of the Wan Chai and Eastern districts for 2016 and thereafter are not strictly comparable with those for 2015 and earlier years.",
+   "Land population figures are as at mid-year.  Marine population and area for reservoirs are not included in calculating population density.  Land area figures shown in this table refer to those adopted for calculating population density and may differ slightly from those published in other publications due to the difference in coverage (e.g. exclusion of reservoirs).  Besides, figures may not add up to the totals due to rounding.",
+   "Excluding a land area of 0.97 sq. km for Lok Ma Chau Loop which has been included into the boundary of Hong Kong SAR but in which District Council district it will be included is pending."
+  ],
+  "source": "Census Planning Section (1), Census and Statistics Department (Enquiry telephone number : 3863 2660  Enquiry e-mail : cp1@censtatd.gov.hk)",
+  "count": {
+   "noOfRecords": 1584,
+   "started": "2026-10-20T13:34:16+00:00",
+   "finished": "2026-10-20T13:34:16+00:00",
+   "durationSeconds": 0.033899
+  }
+ },
+ "dataSet": [
+  {
+   "DC": "",
+   "DCDesc": "Total",
+   "freq": "Y",
+   "period": "2002",
+   "sv": "LA",
+   "svDesc": "(sq. km)",
+   "figure": 1077.24,
+   "sd_value": ""
+  },
+  {
+   "DC": "",
+   "DCDesc": "Total",
+   "freq": "Y",
+   "period": "2024",
+   "sv": "LA",
+   "svDesc": "(sq. km)",
+   "figure": 1089.72,
+   "sd_value": ""
+  },
+  {
+   "DC": "",
+   "DCDesc": "Total",
+   "freq": "Y",
+   "period": "2025",
+   "sv": "LA",
+   "svDesc": "(sq. km)",
+   "figure": 1089.71,
+   "sd_value": ""
+  },
+  {
+   "DC": "",
+   "DCDesc": "Total",
+   "freq": "Y",
+   "period": "2002",
+   "sv": "MYPOPN_LAND",
+   "svDesc": "Number (‘000)",
+   "figure": 6739,
+   "sd_value": ""
+  },
+  {
+   "DC": "",
+   "DCDesc": "Total",
+   "freq": "Y",
+   "period": "2024",
+   "sv": "MYPOPN_LAND",
+   "svDesc": "Number (‘000)",
+   "figure": 7523,
+   "sd_value": ""
+  },
+  {
+   "DC": "",
+   "DCDesc": "Total",
+   "freq": "Y",
+   "period": "2025",
+   "sv": "MYPOPN_LAND",
+   "svDesc": "Number (‘000)",
+   "figure": 7497.8,
+   "sd_value": ""
+  },
+  {
+   "DC": "",
+   "DCDesc": "Total",
+   "freq": "Y",
+   "period": "2002",
+   "sv": "POPN_D",
+   "svDesc": "(Persons per sq. km)",
+   "figure": 6260,
+   "sd_value": ""
+  },
+  {
+   "DC": "",
+   "DCDesc": "Total",
+   "freq": "Y",
+   "period": "2024",
+   "sv": "POPN_D",
+   "svDesc": "(Persons per sq. km)",
+   "figure": 6900,
+   "sd_value": ""
+  },
+  {
+   "DC": "",
+   "DCDesc": "Total",
+   "freq": "Y",
+   "period": "2025",
+   "sv": "POPN_D",
+   "svDesc": "(Persons per sq. km)",
+   "figure": 6880,
+   "sd_value": ""
+  }
+ ]
+}

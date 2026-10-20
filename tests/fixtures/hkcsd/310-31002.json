@@ -1,0 +1,67 @@
+{
+ "header": {
+  "status": {
+   "name": "Success",
+   "code": 0,
+   "description": "Query success",
+   "apiHelp": "https://www.censtatd.gov.hk/en/web_table.html?id=310-31002&api_popup=1"
+  },
+  "title": "Gross Domestic Product (GDP) by major expenditure component at current market prices",
+  "tablenote": [
+   "In Hong Kong, the first released figures on GDP by expenditure component in respect of a period are called \"advance estimates\".  When more data become available, the figures will be revised.  All those figures published subsequently, after the advance estimates, are called \"revised figures\".  These \"revised figures\" are still subject to further regular revision later on when more data are incorporated.  This routine revision is in accordance with the international practice to compile and release GDP figures at the earliest possible time by using only partial data.  In general, the figures are finalised when finalised data from all regular sources are incorporated. Gross Domestic Product = private consumption expenditure + government consumption expenditure + gross domestic fixed capital formation + changes in inventories + exports of goods and services - imports of goods and services Final demand  = domestic demand + exports of goods and services Domestic demand = private consumption expenditure + government consumption expenditure + gross domestic fixed capital formation + changes in inventories",
+   "Figures are compiled based on the change of ownership principle in recording goods sent abroad for processing and merchanting under the standards stipulated in the System of National Accounts 2008.  Users should note that the figures of exports and imports of goods in this table are different from those published in external merchandise trade statistics which are not compiled based on the change of ownership principle.",
+   "r Revised figure",
+   "N.A. Not available",
+   "[φ3] Figure denotes increase or decrease of less than 0.05%."
+  ],
+  "source": "National Income Section (1)1, Census and Statistics Department (Enquiry telephone no. : 3863 2727  Enquiry e-mail : gdp-e@censtatd.gov.hk)",
+  "count": {
+   "noOfRecords": 6975,
+   "started": "2026-10-20T13:34:13+00:00",
+   "finished": "2026-10-20T13:34:14+00:00",
+   "durationSeconds": 0.328733
+  }
+ },
+ "dataSet": [
+  {
+   "GDP_COMPONENT": "",
+   "GDP_COMPONENTDesc": "Total",
+   "freq": "Y",
+   "period": "2023",
+   "sv": "CUR",
+   "svDesc": "HK$ million",
+   "figure": 2981210,
+   "sd_value": ""
+  },
+  {
+   "GDP_COMPONENT": "",
+   "GDP_COMPONENTDesc": "Total",
+   "freq": "Y",
+   "period": "2024",
+   "sv": "CUR",
+   "svDesc": "HK$ million",
+   "figure": 3186526,
+   "sd_value": "r"
+  },
+  {
+   "GDP_COMPONENT": "",
+   "GDP_COMPONENTDesc": "Total",
+   "freq": "Y",
+   "period": "2023",
+   "sv": "CUR",
+   "svDesc": "Year-on-year % change",
+   "figure": 6.1,
+   "sd_value": ""
+  },
+  {
+   "GDP_COMPONENT": "",
+   "GDP_COMPONENTDesc": "Total",
+   "freq": "Y",
+   "period": "2024",
+   "sv": "CUR",
+   "svDesc": "Year-on-year % change",
+   "figure": 6.9,
+   "sd_value": "r"
+  }
+ ]
+}

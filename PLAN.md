@@ -100,25 +100,24 @@ uv run pytest -q                                    # 含 test_schema.py：约�
 
 1. `http.py`：统一 UA、超时、重试（3 次，指数退避）、限速（≥1 秒/请求）、`manifest.json` 写入。
 2. `adapters/worldbank.py`：拉取 6 个经济体 × 2 个指标，写入 `country_gdp_usd`、`fx_lcu_per_usd`。
-3. `adapters/singstat.py`：
-   - `M014871`（季度现价 GDP）按年加总；
-   - `M810001` 取总人口。
-4. `adapters/hkcsd.py`：
-   - 表 `310-31002`（现价 GDP，百万港元）；
-   - 人口表取年中人口。
-5. 建 `tests/fixtures/`，为上述三个 adapter 各存一份小样本并写解析单元测试。
+3. `adapters/singstat.py`：`M014871`（季度现价 GDP，按年加总）、`M810001`（总人口）、`M890151`（土地面积）。
+4. `adapters/hkcsd.py`：`310-31002`（现价 GDP）、`110-01001`（年中人口，取 6 月）、`110-02001`（土地面积）。
+5. 建 `tests/fixtures/`，为三个 adapter 各存裁剪样本并写解析回归（含单位过滤的坑）。
 
-**产出**：`data/raw/{WB, SINGSTAT, HKCSD}/*`、`fact` 表中约 150 行、`issue` 表中的缺失记录。
+**产出**：`data/raw/` 下 8 个 source 目录、`fact` 表 639 行（世界银行 1990–2025 全序列 + 港澳 36 年序列）、`doctor` 覆盖矩阵中新加坡与香港全部点亮。
 
 **自检**
 
 ```bash
 uv run citygdp fetch --source worldbank,singstat,hkcsd
 uv run citygdp ingest --source worldbank,singstat,hkcsd
-sqlite3 data/db/city_gdp.sqlite \
-  "select entity_code, indicator, count(*) from fact group by 1,2 order by 1,2;"
-uv run citygdp validate --rule R2,R3,R7
+uv run citygdp doctor            # 覆盖矩阵应点亮新加坡、香港
+uv run pytest -q                 # 含三个适配器的解析回归
+# 离线重建：删除 DB 后不联网重灌，结果应与之前一致
+rm data/db/city_gdp.sqlite && uv run citygdp ingest --source all
 ```
+
+> `validate` 的规则实现统一放在 S6，避免 S2 出现半成品规则集；本步用 `doctor` 覆盖矩阵 + 解析回归 + 离线重建作为门禁。
 
 **抽检数字（人工比对官方页面）**
 
@@ -128,8 +127,11 @@ uv run citygdp validate --rule R2,R3,R7
 | 香港 2024 GDP | 3,186,526 百万港元 |
 | CNY/USD 2000 年均汇率 | ≈ 8.2784 |
 | 新加坡 2024 总人口 | ≈ 604 万 |
+| 香港 2024 年中人口 | 752.41 万 |
+| 新加坡 2025 土地面积 | 744.3 km² |
+| 香港 2024 土地面积 | 1,089.72 km²（不含水域） |
 
-**需你确认**：新加坡季度加总得到的年度值是否可接受（若你更希望用 SingStat 年度表，我在这一步换源）。
+**需你确认**：新加坡季度加总得到的年度值是否可接受（若你更希望用 SingStat 年度表，我在这一步换源）；香港面积按「不含水域」口径（1,089.72 km²）是否符合预期。
 
 **风险**：世界银行 2025 年数据可能未发布 → 记 `issue`（warn），不算失败。
 

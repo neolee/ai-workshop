@@ -1,0 +1,33 @@
+{
+  "source_id": "HKCSD-110-01001-2026",
+  "dataset_key": "HKCSD-110-01001",
+  "meta": {
+    "id": "HKCSD-110-01001-2026",
+    "dataset_key": "HKCSD-110-01001",
+    "city_code": "HKG",
+    "indicator": "population",
+    "organization": "Census and Statistics Department, Hong Kong SAR",
+    "dataset_title": "Population by sex and age group",
+    "table_id": "110-01001",
+    "url": "https://www.censtatd.gov.hk/api/get.php?id=110-01001&lang=en&full_series=1",
+    "vintage": 2026,
+    "published_at": null,
+    "acquisition": "auto",
+    "notes": "数据版本以最新期间年度标识；无独立发布日期字段"
+  },
+  "urls": [
+    "https://www.censtatd.gov.hk/api/get.php?id=110-01001&lang=en&full_series=1"
+  ],
+  "http_status": 200,
+  "etag": null,
+  "last_modified": null,
+  "fetched_at": "2026-10-20T21:34:25+08:00",
+  "acquisition": "auto",
+  "files": [
+    {
+      "name": "110-01001.json",
+      "sha256": "b8585c99cbc4dd01c459e28a32ca0ff729b4ed9aa3de2d204f27b1304b27fb0a",
+      "bytes": 3547267
+    }
+  ]
+}

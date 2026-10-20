@@ -1,0 +1,63 @@
+{
+  "source_id": "WB-NY.GDP.MKTP.CD-2026-10-08",
+  "dataset_key": "WB-NY.GDP.MKTP.CD",
+  "meta": {
+    "id": "WB-NY.GDP.MKTP.CD-2026-10-08",
+    "dataset_key": "WB-NY.GDP.MKTP.CD",
+    "city_code": null,
+    "indicator": "NY.GDP.MKTP.CD",
+    "organization": "World Bank",
+    "dataset_title": "World Development Indicators — GDP (current US$)",
+    "table_id": "NY.GDP.MKTP.CD",
+    "url": "https://api.worldbank.org/v2/country/CHN/indicator/NY.GDP.MKTP.CD?format=json&per_page=1000&date=1990:2030",
+    "vintage": "2026-10-08",
+    "published_at": "2026-10-08",
+    "acquisition": "auto",
+    "notes": null
+  },
+  "urls": [
+    "https://api.worldbank.org/v2/country/USA/indicator/NY.GDP.MKTP.CD?format=json&per_page=1000&date=1990:2030",
+    "https://api.worldbank.org/v2/country/GBR/indicator/NY.GDP.MKTP.CD?format=json&per_page=1000&date=1990:2030",
+    "https://api.worldbank.org/v2/country/JPN/indicator/NY.GDP.MKTP.CD?format=json&per_page=1000&date=1990:2030",
+    "https://api.worldbank.org/v2/country/SGP/indicator/NY.GDP.MKTP.CD?format=json&per_page=1000&date=1990:2030",
+    "https://api.worldbank.org/v2/country/CHN/indicator/NY.GDP.MKTP.CD?format=json&per_page=1000&date=1990:2030",
+    "https://api.worldbank.org/v2/country/HKG/indicator/NY.GDP.MKTP.CD?format=json&per_page=1000&date=1990:2030"
+  ],
+  "http_status": 200,
+  "etag": null,
+  "last_modified": "Tue, 20 Oct 2026 13:33:48 GMT",
+  "fetched_at": "2026-10-20T21:33:48+08:00",
+  "acquisition": "auto",
+  "files": [
+    {
+      "name": "USA.json",
+      "sha256": "84f6b3592283c2786b957b7d2e2b42ba13e86039b6fc9bc4c58c0c0db12309c5",
+      "bytes": 7679
+    },
+    {
+      "name": "GBR.json",
+      "sha256": "f058bd3ea8a636f29a1b7a15b541f2e7fbaffff47c43e6a884924ab1771aaf1d",
+      "bytes": 7794
+    },
+    {
+      "name": "JPN.json",
+      "sha256": "08b4faebfd641792eae5068a0e80f339530817eb80c354fed58a89a055c4574a",
+      "bytes": 7467
+    },
+    {
+      "name": "SGP.json",
+      "sha256": "8c46a6a2fcf1ada5dd26978081a0355c4abdf9fffd3bb91f2c20137cb4f568e4",
+      "bytes": 7614
+    },
+    {
+      "name": "CHN.json",
+      "sha256": "d7a5fc49867e8bf0db6e8f6ecc3e72a85eff6d82458122c490ebbfd04bf48f90",
+      "bytes": 7466
+    },
+    {
+      "name": "HKG.json",
+      "sha256": "ec2b63699415d5c0995bb73ba9fb67a911528d4728b3a9833f02d4fb0dfbc127",
+      "bytes": 8006
+    }
+  ]
+}

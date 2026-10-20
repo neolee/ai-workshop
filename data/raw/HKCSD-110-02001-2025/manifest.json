@@ -1,0 +1,33 @@
+{
+  "source_id": "HKCSD-110-02001-2025",
+  "dataset_key": "HKCSD-110-02001",
+  "meta": {
+    "id": "HKCSD-110-02001-2025",
+    "dataset_key": "HKCSD-110-02001",
+    "city_code": "HKG",
+    "indicator": "area",
+    "organization": "Census and Statistics Department, Hong Kong SAR",
+    "dataset_title": "Land area, land population and population density by District Council district",
+    "table_id": "110-02001",
+    "url": "https://www.censtatd.gov.hk/api/get.php?id=110-02001&lang=en&full_series=1",
+    "vintage": 2025,
+    "published_at": null,
+    "acquisition": "auto",
+    "notes": "数据版本以最新期间年度标识；无独立发布日期字段"
+  },
+  "urls": [
+    "https://www.censtatd.gov.hk/api/get.php?id=110-02001&lang=en&full_series=1"
+  ],
+  "http_status": 200,
+  "etag": null,
+  "last_modified": null,
+  "fetched_at": "2026-10-20T21:34:25+08:00",
+  "acquisition": "auto",
+  "files": [
+    {
+      "name": "110-02001.json",
+      "sha256": "2f965dd0f2c804c45caa77a0a9e5c7673654ca0a13fbb232c73e1125f3573f01",
+      "bytes": 414171
+    }
+  ]
+}

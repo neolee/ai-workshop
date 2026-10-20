@@ -1,0 +1,33 @@
+{
+  "source_id": "HKCSD-310-31002-2025",
+  "dataset_key": "HKCSD-310-31002",
+  "meta": {
+    "id": "HKCSD-310-31002-2025",
+    "dataset_key": "HKCSD-310-31002",
+    "city_code": "HKG",
+    "indicator": "gdp",
+    "organization": "Census and Statistics Department, Hong Kong SAR",
+    "dataset_title": "Gross Domestic Product (GDP) by major expenditure component at current market prices",
+    "table_id": "310-31002",
+    "url": "https://www.censtatd.gov.hk/api/get.php?id=310-31002&lang=en&full_series=1",
+    "vintage": 2025,
+    "published_at": null,
+    "acquisition": "auto",
+    "notes": "数据版本以最新期间年度标识；无独立发布日期字段"
+  },
+  "urls": [
+    "https://www.censtatd.gov.hk/api/get.php?id=310-31002&lang=en&full_series=1"
+  ],
+  "http_status": 200,
+  "etag": null,
+  "last_modified": null,
+  "fetched_at": "2026-10-20T21:34:24+08:00",
+  "acquisition": "auto",
+  "files": [
+    {
+      "name": "310-31002.json",
+      "sha256": "4de949758f7a18911d26eba0142b2885954e3db5e3ae3d5f2d13d14be7be17c1",
+      "bytes": 2077683
+    }
+  ]
+}

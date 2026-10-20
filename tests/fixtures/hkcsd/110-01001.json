@@ -1,0 +1,74 @@
+{
+ "header": {
+  "status": {
+   "name": "Success",
+   "code": 0,
+   "description": "Query success",
+   "apiHelp": "https://www.censtatd.gov.hk/en/web_table.html?id=110-01001&api_popup=1"
+  },
+  "title": "Population by sex and age group",
+  "tablenote": [
+   "The figures from 1961 to 1995 are compiled based on the \"extended de facto\" method and those from 1996 onwards are compiled based on the \"resident population\" method.",
+   "N.A. Not available",
+   "p Provisional figure",
+   "[-φ32] Figure denotes less than 0.05%."
+  ],
+  "source": "Demographic Statistics Section (1), Census and Statistics Department (Enquiry telephone no. : 3863 2702  Enquiry e-mail : population@censtatd.gov.hk)",
+  "count": {
+   "noOfRecords": 11154,
+   "started": "2026-10-20T13:34:15+00:00",
+   "finished": "2026-10-20T13:34:15+00:00",
+   "durationSeconds": 0.441502
+  }
+ },
+ "dataSet": [
+  {
+   "SEX": "",
+   "SEXDesc": "Total",
+   "AGE": "",
+   "AGEDesc": "Total",
+   "freq": "H",
+   "period": "202306",
+   "sv": "POP",
+   "svDesc": "Number ('000)",
+   "figure": 7536.1,
+   "sd_value": ""
+  },
+  {
+   "SEX": "",
+   "SEXDesc": "Total",
+   "AGE": "",
+   "AGEDesc": "Total",
+   "freq": "H",
+   "period": "202406",
+   "sv": "POP",
+   "svDesc": "Number ('000)",
+   "figure": 7524.1,
+   "sd_value": ""
+  },
+  {
+   "SEX": "",
+   "SEXDesc": "Total",
+   "AGE": "",
+   "AGEDesc": "Total",
+   "freq": "H",
+   "period": "202306",
+   "sv": "POP",
+   "svDesc": "% of total population",
+   "figure": 100,
+   "sd_value": ""
+  },
+  {
+   "SEX": "",
+   "SEXDesc": "Total",
+   "AGE": "",
+   "AGEDesc": "Total",
+   "freq": "H",
+   "period": "202406",
+   "sv": "POP",
+   "svDesc": "% of total population",
+   "figure": 100,
+   "sd_value": ""
+  }
+ ]
+}

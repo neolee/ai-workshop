@@ -1,0 +1,33 @@
+{
+  "source_id": "SINGSTAT-M810001-2026-09-25",
+  "dataset_key": "SINGSTAT-M810001",
+  "meta": {
+    "id": "SINGSTAT-M810001-2026-09-25",
+    "dataset_key": "SINGSTAT-M810001",
+    "city_code": "SGP",
+    "indicator": "population",
+    "organization": "Singapore Department of Statistics (SingStat)",
+    "dataset_title": "Indicators on Population, Annual",
+    "table_id": "M810001",
+    "url": "https://tablebuilder.singstat.gov.sg/api/table/tabledata/M810001",
+    "vintage": "2026-09-25",
+    "published_at": "2026-09-25",
+    "acquisition": "auto",
+    "notes": null
+  },
+  "urls": [
+    "https://tablebuilder.singstat.gov.sg/api/table/tabledata/M810001"
+  ],
+  "http_status": 200,
+  "etag": null,
+  "last_modified": null,
+  "fetched_at": "2026-10-20T21:34:12+08:00",
+  "acquisition": "auto",
+  "files": [
+    {
+      "name": "M810001.json",
+      "sha256": "f57fe79c5b5451d4dc79da867ea61257b0a0edf8f3d04eaf04872b412fc63d7e",
+      "bytes": 59815
+    }
+  ]
+}

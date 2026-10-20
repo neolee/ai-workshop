@@ -1,0 +1,33 @@
+{
+  "source_id": "SINGSTAT-M014871-2026-08-11",
+  "dataset_key": "SINGSTAT-M014871",
+  "meta": {
+    "id": "SINGSTAT-M014871-2026-08-11",
+    "dataset_key": "SINGSTAT-M014871",
+    "city_code": "SGP",
+    "indicator": "gdp",
+    "organization": "Singapore Department of Statistics (SingStat)",
+    "dataset_title": "Expenditure on Gross Domestic Product at Current Prices, Quarterly",
+    "table_id": "M014871",
+    "url": "https://tablebuilder.singstat.gov.sg/api/table/tabledata/M014871",
+    "vintage": "2026-08-11",
+    "published_at": "2026-08-11",
+    "acquisition": "auto",
+    "notes": null
+  },
+  "urls": [
+    "https://tablebuilder.singstat.gov.sg/api/table/tabledata/M014871"
+  ],
+  "http_status": 200,
+  "etag": null,
+  "last_modified": null,
+  "fetched_at": "2026-10-20T21:34:11+08:00",
+  "acquisition": "auto",
+  "files": [
+    {
+      "name": "M014871.json",
+      "sha256": "005470ef55b826de87aef0151566848dbaeec19fd34e03d2b4bb9d5d576b2ff1",
+      "bytes": 106118
+    }
+  ]
+}

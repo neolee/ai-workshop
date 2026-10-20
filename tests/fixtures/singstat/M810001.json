@@ -1,0 +1,48 @@
+{
+ "Data": {
+  "theme": "Population",
+  "subject": "Population and Population Structure",
+  "topic": "Key Annual Indicators on Population",
+  "id": "M810001",
+  "groupTitle": "Indicators On Population",
+  "title": "Indicators On Population, Annual",
+  "frequency": "Annual",
+  "adjustmentType": "",
+  "datasource": "SINGAPORE DEPARTMENT OF STATISTICS",
+  "footnote": "More information, including related reports/articles, infographics and dashboards is available at the following link: https://www.singstat.gov.sg/find-data/explore-data-themes/population/population-and-population-structure. ",
+  "generatedBy": "SingStat Table Builder",
+  "dataLastUpdated": "25/09/2026",
+  "dateGenerated": "20/10/2026",
+  "offset": null,
+  "limit": "5000",
+  "sortBy": null,
+  "timeFilter": null,
+  "between": null,
+  "search": null,
+  "row": [
+   {
+    "seriesNo": "1",
+    "rowText": "Total Population",
+    "uoM": "Number",
+    "footnote": "Data prior to 1990 are based on de facto concept (i.e. the person is present in the country at the reference period), while data from 1990 onwards are based on de jure concept (i.e. the person's place of usual residence).  Data from 2003 onwards exclude residents who are overseas for a continuous period of 12 months or longer as at the reference period.",
+    "columns": [
+     {
+      "key": "2023",
+      "value": "5917648"
+     },
+     {
+      "key": "2024",
+      "value": "6036860"
+     },
+     {
+      "key": "2025",
+      "value": "6111175"
+     }
+    ]
+   }
+  ]
+ },
+ "DataCount": 1,
+ "StatusCode": 200,
+ "Message": ""
+}
