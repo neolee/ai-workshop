@@ -1,4 +1,3 @@
-# Python-generated files
 __pycache__/
 *.py[oc]
 build/
@@ -6,5 +5,12 @@ dist/
 wheels/
 *.egg-info
 
-# Virtual environments
 .venv
+
+# working date, see DESIGN.md §4.3
+data/db/*.sqlite
+data/db/*.sqlite-journal
+
+.uv-cache/
+
+.pytest_cache/

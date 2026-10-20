@@ -1,0 +1,123 @@
+# 城市主数据 —— 口径的唯一定义处
+#
+# 修改本文件等同于修改口径，必须同步更新 SPEC.md §4.1 与 DESIGN.md §8。
+# 面积 reference_km2 仅为量级基准与校验锚点，实际取数以数据源为准。
+
+cities:
+  - code: NYC
+    name_cn: 纽约
+    name_en: New York City
+    country_iso3: USA
+    currency: USD
+    boundary: "Bronx、Kings、New York、Queens、Richmond 五县之和；不得使用都会区口径"
+    population:
+      basis: "5 县合计，7 月 1 日人口估计"
+      source_hint: "U.S. Census Bureau 县级人口估计"
+    area:
+      basis: "5 县陆地面积"
+      reference_km2: 778.2
+      note: "含水域口径约 1,223 km²，不采用"
+    note: "2000 年无县级 GDP 数据（BEA 序列自 2001 年起）"
+
+  - code: LDN
+    name_cn: 伦敦
+    name_en: London
+    country_iso3: GBR
+    currency: GBP
+    boundary: "ITL1 London（32 个自治市 + City of London）"
+    population:
+      basis: "ONS 年中人口估计"
+      source_hint: "ONS mid-year estimates；不使用 projections"
+    area:
+      basis: "大伦敦陆地面积"
+      reference_km2: 1572.0
+    note: null
+
+  - code: TYO
+    name_cn: 东京
+    name_en: Tokyo
+    country_iso3: JPN
+    currency: JPY
+    boundary: "东京都全域（23 区 + 多摩地区 + 岛屿）"
+    population:
+      basis: "都推计人口，10 月 1 日"
+      source_hint: "東京都総務局統計部 推計人口"
+    area:
+      basis: "都全域面积（含岛屿）"
+      reference_km2: 2194.07
+    note: "年度值（4 月–翌年 3 月），按起始年对齐；最新为令和 5 年度（2023）"
+
+  - code: SGP
+    name_cn: 新加坡
+    name_en: Singapore
+    country_iso3: SGP
+    currency: SGD
+    boundary: "全国"
+    population:
+      basis: "年中总人口（含非居民）"
+      source_hint: "SingStat M810001"
+    area:
+      basis: "当年陆地面积（填海造地逐年变化）"
+      reference_km2: 735.2
+    note: "城市国家，经济首位度恒为 100%"
+
+  - code: BJS
+    name_cn: 北京
+    name_en: Beijing
+    country_iso3: CHN
+    currency: CNY
+    boundary: "全市"
+    population:
+      basis: "年平均常住人口 =（上年末 + 本年末）/ 2"
+      source_hint: "北京市统计局 统计年鉴/统计公报"
+    area:
+      basis: "全市面积"
+      reference_km2: 16410.54
+    note: null
+
+  - code: SHA
+    name_cn: 上海
+    name_en: Shanghai
+    country_iso3: CHN
+    currency: CNY
+    boundary: "全市"
+    population:
+      basis: "年平均常住人口 =（上年末 + 本年末）/ 2"
+      source_hint: "上海市统计局 统计年鉴/统计公报"
+    area:
+      basis: "全市面积"
+      reference_km2: 6340.5
+    note: null
+
+  - code: SZX
+    name_cn: 深圳
+    name_en: Shenzhen
+    country_iso3: CHN
+    currency: CNY
+    boundary: "全市；2024 年起含深汕特别合作区"
+    population:
+      basis: "年平均常住人口 =（上年末 + 本年末）/ 2"
+      source_hint: "深圳市统计局 统计年鉴/统计公报"
+    area:
+      basis: "全市陆域面积"
+      reference_km2: 1997.47
+    note: "2024 年起含深汕特别合作区（陆域 468.3 km²）"
+    breaks:
+      - from_year: 2024
+        change: "纳入深汕特别合作区"
+        affected: ["gdp_lcu", "population", "area_km2"]
+        note: "GDP/人口/面积同步跳变，不回溯调整"
+
+  - code: HKG
+    name_cn: 香港
+    name_en: Hong Kong
+    country_iso3: CHN
+    currency: HKD
+    boundary: "全境 18 区（含离岛）"
+    population:
+      basis: "年中人口"
+      source_hint: "香港政府统计处"
+    area:
+      basis: "当年陆地面积"
+      reference_km2: 1114.57
+    note: "特别行政区；经济首位度以中国（世界银行 CHN，不含港澳台）为分母"

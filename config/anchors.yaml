@@ -1,0 +1,44 @@
+# 官方公布值锚点 —— 用于 QA 规则 R8（相对偏差 ≤ tolerance）
+#
+# 每条锚点必须注明出处与口径。S2–S5 各步骤完成后逐步补充。
+# value 一律使用数据源原始单位（gdp_lcu 为当地货币元，非亿元/百万）。
+
+tolerance: 0.005
+
+anchors:
+  - city: SGP
+    year: 2025
+    indicator: gdp_lcu
+    value: 789529200000
+    unit: SGD
+    source: "SingStat M014871（季度现价加总）"
+  - city: HKG
+    year: 2024
+    indicator: gdp_lcu
+    value: 3186526000000
+    unit: HKD
+    source: "C&SD 表 310-31002"
+  - city: BJS
+    year: 2025
+    indicator: gdp_lcu
+    value: 5207340000000
+    unit: CNY
+    source: "北京市 2025 年国民经济和社会发展统计公报"
+  - city: SHA
+    year: 2025
+    indicator: gdp_lcu
+    value: 5670871000000
+    unit: CNY
+    source: "上海市 2025 年国民经济和社会发展统计公报"
+  - city: SZX
+    year: 2025
+    indicator: gdp_lcu
+    value: 3873180000000
+    unit: CNY
+    source: "深圳市 2025 年国民经济和社会发展统计公报"
+  - city: NYC
+    year: 2024
+    indicator: gdp_lcu
+    value: 1377780000000
+    unit: USD
+    source: "BEA CAGDP1，五县现价 GDP 合计"
