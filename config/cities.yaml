@@ -81,7 +81,8 @@ cities:
     currency: CNY
     boundary: "全市"
     population:
-      basis: "年平均常住人口 =（上年末 + 本年末）/ 2"
+      basis: "年末常住人口；S6 由（上年末 + 本年末）/ 2 计算年平均"
+      computation: year_end_average
       source_hint: "北京市统计局 统计年鉴/统计公报"
     area:
       kind: constant
@@ -99,7 +100,8 @@ cities:
     currency: CNY
     boundary: "全市"
     population:
-      basis: "年平均常住人口 =（上年末 + 本年末）/ 2"
+      basis: "年末常住人口；S6 由（上年末 + 本年末）/ 2 计算年平均"
+      computation: year_end_average
       source_hint: "上海市统计局 统计年鉴/统计公报"
     area:
       kind: constant
@@ -117,7 +119,8 @@ cities:
     currency: CNY
     boundary: "全市；2024 年起含深汕特别合作区"
     population:
-      basis: "年平均常住人口 =（上年末 + 本年末）/ 2"
+      basis: "年末常住人口；S6 由（上年末 + 本年末）/ 2 计算年平均"
+      computation: year_end_average
       source_hint: "深圳市统计局 统计年鉴/统计公报"
     area:
       basis: "全市陆域面积；2024 年起含深汕特别合作区"

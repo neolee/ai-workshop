@@ -524,17 +524,17 @@ gdp_per_km2    = gdp_usd / area_km2
 
 | 编号 | 规则 | 级别 |
 |---|---|---|
-| R1 | 每城每年每指标至多一条 `fact`；重复即报错 | error |
-| R2 | 汇率区间：CNY 6.0–9.0、JPY 90–160、GBP 0.50–0.95、SGD 1.20–1.80、HKD 7.70–7.90 | error |
+| R1 | 同一 `(entity_type, entity_code, indicator, year)` 至多一条 `fact`（数据库唯一约束的兜底检查） | error |
+| R2 | 汇率区间：CNY 6.0–9.0、JPY 75–170、GBP 0.50–0.95、SGD 1.20–1.80、HKD 7.70–7.90（区间需覆盖历史极值：日元年均 2011 年 79.8、2010 年 87.8） | error |
 | R3 | 首位度 ∈ (0, 100]；新加坡 = 100.00±0.01 | error |
 | R4 | 城市 GDP 美元序列同比 ∈ [−25%, +45%]（超界仅告警，需人工确认） | warn |
-| R5 | 人均 GDP 区间（城市级下限/上限，配置化） | warn |
+| R5 | 人均 GDP ∈ [2,000, 250,000] 美元（2000 年中国城市约 3,000） | warn |
 | R6 | 地均 GDP 区间（城市级，配置化） | warn |
-| R7 | 量级哨兵：中国城市 GDP ∈ [1e11, 2e13] 元；日本 ∈ [1e14, 2e14] 日元 | error |
+| R7 | 量级哨兵：中国城市 GDP ∈ [1e11, 2e13] 元；日本 ∈ [1e14, 2e14] 日元。**只校验 `cfg.years`**，`fact` 中保留的 1978–1999 历史值不参与 | error |
 | R8 | 锚点比对：与 `anchors.yaml` 相对偏差 ≤ 0.5% | error |
 | R9 | 缺失格必须落在 SPEC §4.3 白名单内，白名单外的空值报错 | error |
 | R10 | 来源登记表必填字段非空；`local_path` 文件存在且哈希匹配 | error |
-| R11 | 同一 `(entity_type, entity_code, indicator, year)` 不得有多条 `fact`（多源须显式指定采纳源） | error |
+| R11 | 每个非白名单格子必须有 4 项派生指标（完整性） | error |
 
 校验结果写入 `issue` 表，并生成 `output/qa_report.md`（步骤级）。
 

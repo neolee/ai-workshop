@@ -44,8 +44,30 @@ output:
 # 例：NYC: {population: CENSUS-PEP-2024}
 adopted_source: {}
 
-# 校验阈值（可被 config 覆盖，S6 使用）
+# 校验阈值
 validation:
   primacy_bounds: [0.0, 100.0]
   anchor_tolerance: 0.005
   yoy_bounds: [-0.25, 0.45]
+  fx_bounds:
+    CNY: [6.0, 9.0]
+    JPY: [75.0, 170.0]     # 2011 年均 79.8，2010 为 87.8，区间需覆盖历史极值
+    GBP: [0.50, 0.95]
+    SGD: [1.20, 1.80]
+    HKD: [7.70, 7.90]
+  per_capita_bounds: [2000, 250000]        # 美元/人（含 2000 年中国城市约 3000）
+  density_bounds: [1000000, 2500000000]    # 美元/km²
+  magnitude:
+    CNY: [1.0e+11, 2.0e+13]                # 中国城市 GDP（元）
+    JPY: [1.0e+14, 2.0e+14]                # 东京都内総生産（日元）
+
+# SPEC §4.3 判定的不可得组合；白名单之外的空值视为错误（R9）
+known_missing:
+  - [NYC, 2000]
+  - [NYC, 2025]
+  - [LDN, 2025]
+  - [TYO, 2000]
+  - [TYO, 2005]
+  - [TYO, 2010]
+  - [TYO, 2024]
+  - [TYO, 2025]

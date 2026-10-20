@@ -72,6 +72,7 @@ class Config:
     validation: dict[str, Any]
     anchors: tuple[dict[str, Any], ...]
     anchor_tolerance: float
+    known_missing: frozenset[tuple[str, int]]
 
     @property
     def city_codes(self) -> tuple[str, ...]:
@@ -240,6 +241,23 @@ def load_config(root: str | Path | None = None) -> Config:
         errors.append("anchors.yaml: tolerance 必须在 (0,1) 内")
         tolerance = 0.005
 
+    # ---- 缺失白名单 ----
+    known_raw = params.get("known_missing") or []
+    known: set[tuple[str, int]] = set()
+    if not isinstance(known_raw, list):
+        errors.append("params.yaml: known_missing 必须是列表")
+    else:
+        for i, item in enumerate(known_raw):
+            if not (isinstance(item, (list, tuple)) and len(item) == 2):
+                errors.append(f"known_missing[{i}] 必须是 [城市代码, 年份]")
+                continue
+            code, y = item
+            if code not in set(codes):
+                errors.append(f"known_missing[{i}]: 未知城市 {code}")
+            if y not in set(years):
+                errors.append(f"known_missing[{i}]: 年份 {y} 不在 years 中")
+            known.add((str(code), int(y)))
+
     # ---- 采纳源 ----
     adopted = params.get("adopted_source") or {}
     if not isinstance(adopted, dict):
@@ -272,4 +290,5 @@ def load_config(root: str | Path | None = None) -> Config:
         validation=params.get("validation") or {},
         anchors=tuple(anchors),
         anchor_tolerance=float(tolerance),
+        known_missing=frozenset(known),
     )

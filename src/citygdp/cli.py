@@ -13,28 +13,11 @@ import unicodedata
 from . import __version__, db
 from .adapters import ADAPTERS
 from .adapters.base import latest_fetch
+from .build import build
+from .validate import validate
 from .config import Config, ConfigError, load_config
 from .http import FetchError, HttpClient
 from .ingest import ingest_constant_areas, ingest_fetched, register_cities
-
-# 交付指标的顺序即交付表中指标块的顺序（SPEC.md §8.1）
-_KNOWN_MISSING: frozenset[tuple[str, int]] = frozenset(
-    {
-        ("NYC", 2000),
-        ("NYC", 2025),
-        ("LDN", 2025),
-        ("TYO", 2000),
-        ("TYO", 2005),
-        ("TYO", 2010),
-        ("TYO", 2024),
-        ("TYO", 2025),
-    }
-)
-
-
-def _known_missing(city_code: str, year: int) -> bool:
-    return (city_code, year) in _KNOWN_MISSING
-
 
 # ---------------------------------------------------------------- 显示辅助
 
@@ -123,7 +106,9 @@ def cmd_doctor(_args: argparse.Namespace) -> int:
         ok = ok and fk_ok
 
         filled = sum(1 for c in cfg.cities for y in cfg.years if (c.code, y) in coverage)
-        expected = sum(1 for c in cfg.cities for y in cfg.years if not _known_missing(c.code, y))
+        expected = sum(
+            1 for c in cfg.cities for y in cfg.years if (c.code, y) not in cfg.known_missing
+        )
         print(f"       覆盖   {filled}/{expected}（按 SPEC §4.3 的可得性基线）")
     finally:
         conn.close()
@@ -194,6 +179,41 @@ def cmd_ingest(args: argparse.Namespace) -> int:
     return 0 if total else 1
 
 
+# ---------------------------------------------------------------- build
+
+def cmd_build(_args: argparse.Namespace) -> int:
+    cfg = load_config()
+    conn = db.connect(cfg.paths["db"])
+    try:
+        counts = build(conn, cfg)
+    finally:
+        conn.close()
+    order = ["gdp_usd", "primacy_pct", "gdp_per_capita_usd", "gdp_per_km2_usd"]
+    print("派生指标：" + "  ".join(f"{k}={counts.get(k, 0)}" for k in order))
+    return 0
+
+
+# ---------------------------------------------------------------- validate
+
+def cmd_validate(args: argparse.Namespace) -> int:
+    cfg = load_config()
+    conn = db.connect(cfg.paths["db"])
+    rules = {r.strip() for r in args.rule.split(",")} if args.rule else None
+    try:
+        issues = validate(conn, cfg, rules)
+    finally:
+        conn.close()
+
+    errors = [i for i in issues if i.severity == "error"]
+    warns = [i for i in issues if i.severity == "warn"]
+    print(f"校验完成：error={len(errors)}  warn={len(warns)}")
+    for issue in errors + warns:
+        print(f"  [{issue.rule}][{issue.severity}] {issue.message}")
+    if not issues:
+        print("  全部规则通过")
+    return 1 if errors else 0
+
+
 # ---------------------------------------------------------------- 骨架命令
 
 def _make_stub(name: str):
@@ -222,15 +242,18 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--source", default="all", help="数据源名或逗号分隔列表，默认 all")
     p.set_defaults(func=cmd_ingest)
 
+    p = sub.add_parser("build", help="计算派生指标")
+    p.set_defaults(func=cmd_build)
+
+    p = sub.add_parser("validate", help="规则校验")
+    p.add_argument("--rule", default=None, help="逗号分隔的规则编号，如 R2,R3")
+    p.set_defaults(func=cmd_validate)
+
     for name, help_text in (
-        ("build", "计算派生指标"),
-        ("validate", "规则校验"),
         ("export", "导出交付物"),
         ("all", "全流程（fetch → export）"),
     ):
         p = sub.add_parser(name, help=help_text)
-        if name == "validate":
-            p.add_argument("--rule", default=None, help="逗号分隔的规则编号，如 R2,R3")
         if name == "all":
             p.add_argument("--skip-fetch", action="store_true", help="跳过联网抓取，仅重建")
         p.set_defaults(func=_make_stub(name))
