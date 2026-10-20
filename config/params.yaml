@@ -10,18 +10,26 @@ indicators:
     label: 区域GDP
     unit: 亿美元
     decimals: 1
+    scale: 1.0e-8
+    format: "#,##0.0"
   - key: primacy_pct
     label: 经济首位度
     unit: "%"
     decimals: 2
+    scale: 1.0
+    format: "0.00"
   - key: gdp_per_capita_usd
     label: 人均GDP
     unit: 美元/人
     decimals: 0
+    scale: 1.0
+    format: "#,##0"
   - key: gdp_per_km2_usd
     label: 地均GDP
-    unit: 美元/km²
-    decimals: 0
+    unit: 亿美元/km²
+    decimals: 2
+    scale: 1.0e-8
+    format: "#,##0.00"
 
 # 世界银行指标
 fx_indicator: PA.NUS.FCRF

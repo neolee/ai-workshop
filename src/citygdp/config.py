@@ -201,7 +201,7 @@ def load_config(root: str | Path | None = None) -> Config:
         for i in indicators_raw:
             if not isinstance(i, dict):
                 continue
-            for key in ("key", "label", "unit", "decimals"):
+            for key in ("key", "label", "unit", "decimals", "scale", "format"):
                 if key not in i:
                     errors.append(f"params.yaml: indicator 缺少 {key}")
         indicators = tuple(indicators_raw)

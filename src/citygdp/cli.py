@@ -14,6 +14,7 @@ from . import __version__, db
 from .adapters import ADAPTERS
 from .adapters.base import latest_fetch
 from .build import build
+from .export import export
 from .validate import validate
 from .config import Config, ConfigError, load_config
 from .http import FetchError, HttpClient
@@ -214,13 +215,37 @@ def cmd_validate(args: argparse.Namespace) -> int:
     return 1 if errors else 0
 
 
-# ---------------------------------------------------------------- 骨架命令
+# ---------------------------------------------------------------- export
 
-def _make_stub(name: str):
-    def _stub(_args: argparse.Namespace) -> int:
-        raise NotImplementedError(f"`{name}` 将在后续步骤实现（见 PLAN.md）")
+def cmd_export(_args: argparse.Namespace) -> int:
+    cfg = load_config()
+    conn = db.connect(cfg.paths["db"])
+    try:
+        paths = export(conn, cfg)
+    finally:
+        conn.close()
+    print("交付物：")
+    for path in paths:
+        print(f"  {path.relative_to(cfg.root)}  ({path.stat().st_size:,} B)")
+    return 0
 
-    return _stub
+
+# ---------------------------------------------------------------- all
+
+def cmd_all(args: argparse.Namespace) -> int:
+    if not args.skip_fetch:
+        code = cmd_fetch(argparse.Namespace(source="all"))
+        if code:
+            return code
+    for step in (
+        cmd_ingest,
+        cmd_build,
+        cmd_validate,
+    ):
+        code = step(argparse.Namespace(source="all", rule=None))
+        if code:
+            return code
+    return cmd_export(argparse.Namespace())
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -249,14 +274,12 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--rule", default=None, help="逗号分隔的规则编号，如 R2,R3")
     p.set_defaults(func=cmd_validate)
 
-    for name, help_text in (
-        ("export", "导出交付物"),
-        ("all", "全流程（fetch → export）"),
-    ):
-        p = sub.add_parser(name, help=help_text)
-        if name == "all":
-            p.add_argument("--skip-fetch", action="store_true", help="跳过联网抓取，仅重建")
-        p.set_defaults(func=_make_stub(name))
+    p = sub.add_parser("export", help="导出交付物")
+    p.set_defaults(func=cmd_export)
+
+    p = sub.add_parser("all", help="全流程（fetch → export）")
+    p.add_argument("--skip-fetch", action="store_true", help="跳过联网抓取，仅重建")
+    p.set_defaults(func=cmd_all)
 
     return parser
 
