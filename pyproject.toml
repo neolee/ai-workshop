@@ -1,0 +1,10 @@
+[project]
+name = "showcases"
+version = "0.1.0"
+description = "Workspace for lecture showcases"
+readme = "README.md"
+authors = [
+    { name = "Neo Lee", email = "neo.lee@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = []
