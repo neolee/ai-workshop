@@ -14,9 +14,13 @@ cities:
       basis: "5 县合计，7 月 1 日人口估计"
       source_hint: "U.S. Census Bureau 县级人口估计"
     area:
+      kind: constant
       basis: "5 县陆地面积"
       reference_km2: 778.2
       note: "含水域口径约 1,223 km²，不采用"
+      source_name: "U.S. Census Bureau, Gazetteer Files (counties)"
+      source_url: "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/"
+      as_of: 2020
     note: "2000 年无县级 GDP 数据（BEA 序列自 2001 年起）"
 
   - code: LDN
@@ -29,8 +33,12 @@ cities:
       basis: "ONS 年中人口估计"
       source_hint: "ONS mid-year estimates；不使用 projections"
     area:
+      kind: constant
       basis: "大伦敦陆地面积"
       reference_km2: 1572.0
+      source_name: "ONS, Standard Area Measurements (SAME)"
+      source_url: "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/standardareameasurements"
+      as_of: 2021
     note: null
 
   - code: TYO

@@ -1,0 +1,33 @@
+{
+  "source_id": "ONS-RGDP-1998to2024",
+  "dataset_key": "ONS-RGDP",
+  "meta": {
+    "id": "ONS-RGDP-1998to2024",
+    "dataset_key": "ONS-RGDP",
+    "city_code": "LDN",
+    "indicator": "gdp+population",
+    "organization": "Office for National Statistics (ONS)",
+    "dataset_title": "Regional gross domestic product: all ITL regions — Table 5 (GDP, current prices) & Table 6 (population)",
+    "table_id": "Table 5 / Table 6",
+    "url": "https://www.ons.gov.uk/file?uri=/economy/grossdomesticproductgdp/datasets/regionalgrossdomesticproductallnutslevelregions/1998to2024/regionalgrossdomesticproductgdpbyallinternationalterritoriallevelitlregions.xlsx",
+    "vintage": "1998to2024",
+    "published_at": null,
+    "acquisition": "auto",
+    "notes": "使用 balanced 估计；London 为 ITL1 区域"
+  },
+  "urls": [
+    "https://www.ons.gov.uk/file?uri=/economy/grossdomesticproductgdp/datasets/regionalgrossdomesticproductallnutslevelregions/1998to2024/regionalgrossdomesticproductgdpbyallinternationalterritoriallevelitlregions.xlsx"
+  ],
+  "http_status": 200,
+  "etag": "\"4bae6b50dfaba2b2e631dd79cc9e76b3c4e3baf9--gzip\"",
+  "last_modified": null,
+  "fetched_at": "2026-10-20T21:44:48+08:00",
+  "acquisition": "auto",
+  "files": [
+    {
+      "name": "ons_rgdp.xlsx",
+      "sha256": "0ccfe057c5b83f396a139be1385b506e368287ee78a7e085d44c0e07cfd951fc",
+      "bytes": 620678
+    }
+  ]
+}

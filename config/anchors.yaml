@@ -39,6 +39,12 @@ anchors:
   - city: NYC
     year: 2024
     indicator: gdp_lcu
-    value: 1377780000000
+    value: 1377841498000
     unit: USD
     source: "BEA CAGDP1，五县现价 GDP 合计"
+  - city: LDN
+    year: 2024
+    indicator: gdp_lcu
+    value: 656291000000
+    unit: GBP
+    source: "ONS 区域 GDP，Table 5，London（ITL1）"

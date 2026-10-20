@@ -125,5 +125,58 @@ def _aggregate_sha(manifest: dict) -> str | None:
     return hashlib.sha256(joined.encode("utf-8")).hexdigest()
 
 
+def ingest_constant_areas(conn: sqlite3.Connection, cfg) -> int:
+    """写入「地理常数」型面积（城市面积各年不变，或按 breaks 跳变）。
+
+    这类数据没有可下载的原始文件，以 source_id = REF-GEO-{CODE} 登记，
+    acquisition = manual，并在 notes 中记录所依据的官方出版物。
+    """
+    total = 0
+    for city in cfg.cities:
+        area = city.area or {}
+        if area.get("kind") != "constant":
+            continue
+        value = area.get("reference_km2")
+        if value is None:
+            continue
+
+        source_id = f"REF-GEO-{city.code}"
+        conn.execute(
+            """
+            INSERT OR REPLACE INTO source
+                (id, city_code, indicator, organization, dataset_title, table_id, url,
+                 vintage, published_at, accessed_at, acquisition, notes)
+            VALUES (?, ?, 'area', ?, ?, NULL, ?, ?, NULL, ?, 'manual', ?)
+            """,
+            (
+                source_id,
+                city.code,
+                area.get("source_name") or "城市统计机构",
+                f"{city.name_cn} 面积（{area.get('basis', '')}）",
+                area.get("source_url") or "",
+                str(area.get("as_of") or ""),
+                _now(),
+                area.get("note"),
+            ),
+        )
+        conn.execute("DELETE FROM fact WHERE source_id = ?", (source_id,))
+
+        rows = [(year, float(value)) for year in cfg.years]
+        conn.executemany(
+            "INSERT INTO fact (source_id, entity_type, entity_code, indicator, year, value, unit, status, note) "
+            "VALUES (?, 'city', ?, 'area_km2', ?, ?, 'km2', 'final', NULL)",
+            [(source_id, city.code, year, v) for year, v in rows],
+        )
+        total += len(rows)
+    conn.commit()
+    return total
+
+
+def _now() -> str:
+    from datetime import datetime
+
+    return datetime.now().astimezone().isoformat(timespec="seconds")
+
+
 def dump_meta(meta) -> str:
     return json.dumps(asdict(meta), ensure_ascii=False)

@@ -1,0 +1,33 @@
+{
+  "source_id": "BEA-CAGDP1-2024",
+  "dataset_key": "BEA-CAGDP1",
+  "meta": {
+    "id": "BEA-CAGDP1-2024",
+    "dataset_key": "BEA-CAGDP1",
+    "city_code": "NYC",
+    "indicator": "gdp",
+    "organization": "U.S. Bureau of Economic Analysis (BEA)",
+    "dataset_title": "County gross domestic product (GDP) summary — CAGDP1",
+    "table_id": "CAGDP1",
+    "url": "https://apps.bea.gov/regional/zip/CAGDP1.zip",
+    "vintage": "2024",
+    "published_at": null,
+    "acquisition": "auto",
+    "notes": "纽约市 = Bronx+Kings+New York+Queens+Richmond 五县加总"
+  },
+  "urls": [
+    "https://apps.bea.gov/regional/zip/CAGDP1.zip"
+  ],
+  "http_status": 200,
+  "etag": "\"4748349ca396dc1:0\"",
+  "last_modified": "Thu, 05 Feb 2026 13:30:35 GMT",
+  "fetched_at": "2026-10-20T21:44:44+08:00",
+  "acquisition": "auto",
+  "files": [
+    {
+      "name": "CAGDP1.zip",
+      "sha256": "95b49283df20772ded04ea53e1142955b8ade5e7f93047c0a3dfaf403b166fe1",
+      "bytes": 1928241
+    }
+  ]
+}

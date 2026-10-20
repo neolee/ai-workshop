@@ -9,7 +9,7 @@ import pytest
 from citygdp.adapters.base import Fact, Fetched, SourceMeta
 from citygdp.config import load_config
 from citygdp.db import connect, init_db
-from citygdp.ingest import ingest_fetched, register_cities
+from citygdp.ingest import ingest_constant_areas, ingest_fetched, register_cities
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -88,3 +88,14 @@ def test_duplicate_fact_in_one_batch_is_deduped(conn):
         "SELECT value FROM fact WHERE indicator='population' AND year=2024"
     ).fetchone()["value"]
     assert value == pytest.approx(7_524_100)  # 后者覆盖前者
+
+
+def test_constant_areas_written(conn):
+    cfg = load_config(ROOT)
+    count = ingest_constant_areas(conn, cfg)
+    assert count == 18  # NYC + LDN，各 9 个年份
+    rows = conn.execute(
+        "SELECT entity_code, year, value FROM fact WHERE indicator='area_km2'"
+    ).fetchall()
+    assert {r["value"] for r in rows if r["entity_code"] == "NYC"} == {778.2}
+    assert {r["value"] for r in rows if r["entity_code"] == "LDN"} == {1572.0}

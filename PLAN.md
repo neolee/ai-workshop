@@ -144,21 +144,19 @@ rm data/db/city_gdp.sqlite && uv run citygdp ingest --source all
 **动作**
 
 1. `adapters/bea.py`：下载 `CAGDP1.zip` → 内存解压 → 通配匹配州文件 → 过滤 5 县 + `LineCode=3` → 按年求和。
-2. `adapters/census.py`：三个 vintage 的县级人口文件，取 5 县合计；记录所用 vintage。
-3. `adapters/ons.py`：
-   - 抓数据集页，解析最新 xlsx 链接；
-   - 定位 ITL1 London 现价 GDP 行；
-   - 年中人口取 London 合计。
-4. 面积：5 县陆地面积、大伦敦陆地面积写入 `fact`（各年同值）。
+2. `adapters/census.py`：三个 vintage 的县级人口文件（2000–2010 intercensal、2010–2020、2020–2024），按年分段取 5 县合计；注意 `latin-1` 编码与 FIPS 补零不一致。
+3. `adapters/ons.py`：解析数据页取最新 xlsx（`1998to2024`），同一工作簿的 `Table 5` 取 London GDP、`Table 6` 取 London 人口——**人口与 GDP 同源同版本**，无需另找 ONS 人口数据集。
+4. 面积：纽约、伦敦为行政区常数，在 `config/cities.yaml` 标 `area.kind: constant` 并附来源，由 `ingest_constant_areas()` 统一写入 `fact`（`source_id = REF-GEO-{CODE}`，`acquisition = manual`）。
 
-**产出**：纽约 7 个可用年份（2000、2025 空）、伦敦 8 个可用年份（2025 空）的 GDP + 人口 + 面积。
+**产出**：纽约 7 个可用年份（2000、2025 空）、伦敦 8 个可用年份（2025 空）的 GDP + 人口 + 面积；覆盖 33/67。
 
 **自检**
 
 ```bash
 uv run citygdp fetch --source bea,census,ons
-uv run citygdp ingest --source bea,census,ons
-uv run citygdp validate --rule R4,R7,R9
+uv run citygdp ingest --source all
+uv run citygdp doctor            # 覆盖矩阵应点亮纽约、伦敦
+uv run pytest -q                 # 含三个适配器的解析回归
 ```
 
 **抽检数字**
@@ -168,7 +166,9 @@ uv run citygdp validate --rule R4,R7,R9
 | 纽约 5 县合计 2024 GDP | ≈ 13,777.8 亿美元（BEA 2026-02-05 版） |
 | 纽约 2024 人口 | ≈ 848 万 |
 | 伦敦 2024 GDP | 与 ONS 发布值一致（英镑，需现场核对） |
-| 伦敦 2024 人口 | ≈ 890 万 |
+| 伦敦 2024 人口 | 9,089,736 |
+| 伦敦 2024 GDP | 656,291 百万英镑 |
+| 纽约 2024 人口 | 8,478,072 |
 
 **需你确认**：纽约人口在 2010/2020 两处因 vintage 切换产生的跳变，是否接受「以最新 vintage 为主、旧年份回退」的处理方式。
 

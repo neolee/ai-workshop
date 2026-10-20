@@ -15,7 +15,7 @@ from .adapters import ADAPTERS
 from .adapters.base import latest_fetch
 from .config import Config, ConfigError, load_config
 from .http import FetchError, HttpClient
-from .ingest import ingest_fetched, register_cities
+from .ingest import ingest_constant_areas, ingest_fetched, register_cities
 
 # 交付指标的顺序即交付表中指标块的顺序（SPEC.md §8.1）
 _KNOWN_MISSING: frozenset[tuple[str, int]] = frozenset(
@@ -181,6 +181,9 @@ def cmd_ingest(args: argparse.Namespace) -> int:
                 count = ingest_fetched(conn, fetched, facts)
                 total += count
                 print(f"  [{name}] {fetched.meta.id}  fact={count}")
+        area_count = ingest_constant_areas(conn, cfg)
+        if area_count:
+            print(f"  [geo] 常数面积  fact={area_count}")
         counts = db.row_counts(conn)
         print("入库完成：" + "  ".join(f"{k}={v}" for k, v in counts.items()))
     finally:

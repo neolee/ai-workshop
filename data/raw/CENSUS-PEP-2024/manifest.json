@@ -1,0 +1,45 @@
+{
+  "source_id": "CENSUS-PEP-2024",
+  "dataset_key": "CENSUS-PEP",
+  "meta": {
+    "id": "CENSUS-PEP-2024",
+    "dataset_key": "CENSUS-PEP",
+    "city_code": "NYC",
+    "indicator": "population",
+    "organization": "U.S. Census Bureau",
+    "dataset_title": "County Population Totals and Components of Change (Vintage 2024)",
+    "table_id": "co-estYYYY-alldata",
+    "url": "https://www2.census.gov/programs-surveys/popest/datasets/2020-2024/counties/totals/co-est2024-alldata.csv",
+    "vintage": "2024",
+    "published_at": null,
+    "acquisition": "auto",
+    "notes": "三段 vintage 分段使用；2010/2020 存在基期断点"
+  },
+  "urls": [
+    "https://www2.census.gov/programs-surveys/popest/datasets/2000-2010/intercensal/county/co-est00int-tot.csv",
+    "https://www2.census.gov/programs-surveys/popest/datasets/2010-2020/counties/totals/co-est2020-alldata.csv",
+    "https://www2.census.gov/programs-surveys/popest/datasets/2020-2024/counties/totals/co-est2024-alldata.csv"
+  ],
+  "http_status": 200,
+  "etag": null,
+  "last_modified": "Fri, 09 Sep 2016 15:03:16 GMT",
+  "fetched_at": "2026-10-20T21:44:45+08:00",
+  "acquisition": "auto",
+  "files": [
+    {
+      "name": "2000.csv",
+      "sha256": "273e56203b61c2ccfb05a54c9b2b025b0521e3764b175469ca22bcad4b6ae8f6",
+      "bytes": 370855
+    },
+    {
+      "name": "2010.csv",
+      "sha256": "983708e1b68c8e7c4ecbef4d45137bea34ee286abe07662ccc0d6dfc6411fe83",
+      "bytes": 4012355
+    },
+    {
+      "name": "2020.csv",
+      "sha256": "abcc8720d669e793bbfdcd440eeec37a78db3b452adbe4ccd1eadf7c72b522b9",
+      "bytes": 1769182
+    }
+  ]
+}

@@ -89,25 +89,39 @@
   1. 在内存中解压，按 `CAGDP1_*_*.csv` 通配匹配（**不硬编码年份段**）；
   2. 过滤 `LineCode == 3`（现价 GDP）与 `GeoFIPS ∈ {36005, 36047, 36061, 36081, 36085}`；
   3. 按年份求和 → `gdp_lcu`（单位千美元 → ×1e3 转美元）；
-  4. 同时保留 `LineCode == 1`（不变价）到 `fact`，供后续分析，不导出。
-- 版本：以 `ETag` + `Last-Modified` + 文件 SHA256 识别；同一版本重复抓取覆盖同名目录。
+  4. 暂不保留 `LineCode == 1`（不变价）：其余城市暂无同口径实际序列，先留空，S6 若做不变价敏感性再补。
+- 版本：从压缩包内文件名解析，如 `CAGDP1_NY_2001_2024.csv` → `BEA-CAGDP1-2024`；ETag、Last-Modified、SHA256 记录在 manifest。
 - 兜底：若 ZIP 路径失效，改走 BEA API（需免费 key）或人工下载放入 `data/manual`。
 
 #### 3.2.3 美国人口普查局（纽约人口）
 
-- 三个 vintage 文件覆盖不同区间（文件名以 Census 站点为准，实施时确认）：
-  - `co-est00int-alldata.csv`（2000–2010 intercensal，含 7/1/2000）
-  - `co-est2020-alldata.csv`（2010–2020）
-  - `co-est2024-alldata.csv`（2020–2024）
-- 过滤 `STATE=36` 且 `COUNTY ∈ {005,047,061,081,085}`，求和 `POPESTIMATE{year}`。
-- **注意**：三个文件基期不同，2010/2020 处存在跳变；优先使用最新 vintage 的回溯值，无法覆盖的年份才回退旧 vintage，并在 `fact.note` 标注所用 vintage。
+三个 vintage 按年份分段使用（同年重叠时用较新 vintage）：
+
+| 年份区间 | 文件 | 说明 |
+|---|---|---|
+| 2000–2009 | `2000-2010/intercensal/county/co-est00int-tot.csv` | 全国总量文件（370 KB） |
+| 2010–2019 | `2010-2020/counties/totals/co-est2020-alldata.csv` | 全国文件（4 MB） |
+| 2020–2024 | `2020-2024/counties/totals/co-est2024-alldata.csv` | 全国文件（1.7 MB） |
+
+- 过滤 `STATE == 36` 且 `COUNTY ∈ {5,47,61,81,85}`，按年求和 `POPESTIMATE{year}`。
+- **编码**：三个文件都是 `latin-1`（县名含西文重音字符），用 UTF-8 会报错。
+- **FIPS 补零不一致**：2000–2010 文件的 `COUNTY` 是 `5`，后两个是 `005`；统一按整数比较，不要按字符串。
+- **注意**：三段基期不同，2010 / 2020 处有跳变（2020 年用 2020–2024 vintage 的 blended base，8,740,306，而非普查数 8,804,190）；同一序列内不跨段拼接，跳变写入 `fact.note`。
 
 #### 3.2.4 ONS（伦敦 GDP 与人口）
 
-- GDP 数据集页：`https://www.ons.gov.uk/economy/grossdomesticproductgdp/datasets/regionalgrossdomesticproductallnutslevelregions`
-- 解析：抓取页面 HTML，取最新 `.xlsx` 链接；在工作簿中定位 ITL1 现价 GDP 的 `London` 行。
-- 人口：ONS 年中人口估计数据集（UK/England and Wales），取 London 区域合计。
-- 注意：ONS 现版本使用 balanced 估计，同一版本内一致；**不得跨版本拼接**。
+- 数据页：`https://www.ons.gov.uk/economy/grossdomesticproductgdp/datasets/regionalgrossdomesticproductallnutslevelregions`
+- 抓取：解析页面 HTML 中形如 `/{YYYY}to{YYYY}/…xlsx` 的链接，取年份区间最大者（当前 `1998to2024`）。
+- **一份工作簿同时提供 GDP 与人口**，同源同版本：
+
+| 工作表 | 内容 | 单位 |
+|---|---|---|
+| `Table 5` | GDP at current market prices | 百万英镑 |
+| `Table 6` | Total resident population numbers | 人 |
+
+- 解析：找到首列 `ITL` 的表头行建立「列号→年份」映射，再取 `ITL1` + `London` 行；`Table 6` 同理。
+- 版本：文件名中的年份区间（`1998to2024`），`source_id` 为 `ONS-RGDP-1998to2024`。
+- 注意：ONS 现版本使用 balanced 估计，同一版本内一致；**不得跨版本拼接**。人口与 GDP 同版本，天然一致，不再单独取 ONS 人口数据集。
 
 #### 3.2.5 SingStat（新加坡）
 
@@ -122,6 +136,7 @@
 - **M014871 是季度表**（`INIT.md` 未说明这一点）：年度值由四个季度**加总**得到。不足四个季度的年份（如当年只到 Q2）跳过，避免把部分年份当全年。
 - 版本取 `Data.dataLastUpdated`（`DD/MM/YYYY`），转 ISO 后写入 `source_id`。
 - 人口用总人口（含非居民），符合 SPEC §6.3。
+- **仅对现价序列做季度加总**：现价年度值即四季之和（SNA 恒等式），已用 2024/2025 官方年度值验证一致。不变价（chained）年度值**不可**由季度加总得到（链式指数不可加），若将来需要实际 GDP，必须另取年度链式序列。
 
 #### 3.2.6 香港 C&SD
 
