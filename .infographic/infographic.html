@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<title>八座城市，一场重排｜城市 GDP 2000–2025</title>
+<style>
+:root {
+  --paper:#F7F4EC; --ink:#17181C; --muted:#726C61; --rule:#DCD4C4;
+  --sans:"PingFang SC","Hiragino Sans GB","Heiti SC",-apple-system,"Helvetica Neue",sans-serif;
+  --serif:"Songti SC","STSong","Hiragino Mincho ProN",serif;
+  --num:"Avenir Next","Helvetica Neue",-apple-system,sans-serif;
+}
+* { box-sizing:border-box; }
+html,body { margin:0; padding:0; background:var(--paper); }
+body { -webkit-font-smoothing:antialiased; text-rendering:geometricPrecision; }
+.page { width:1500px; background:var(--paper); color:var(--ink); padding:54px 64px 46px;
+        font-family:var(--sans); position:relative; }
+.page::after { content:""; position:absolute; inset:20px; border:1px solid rgba(23,24,28,.10); pointer-events:none; }
+header { position:relative; }
+.kicker { font-family:var(--num); font-size:12px; letter-spacing:.22em; text-transform:uppercase;
+          color:var(--muted); display:flex; gap:14px; align-items:center; }
+.kicker .dot { width:6px; height:6px; border-radius:50%; background:#B23A2B; display:inline-block; }
+.masthead { display:flex; justify-content:space-between; align-items:flex-end; gap:40px; }
+h1 { font-family:var(--serif); font-weight:700; font-size:88px; line-height:1.0; margin:16px 0 0;
+     letter-spacing:-.02em; }
+h1 em { font-style:normal; color:#B23A2B; }
+.deck { font-size:18px; line-height:1.66; margin:20px 0 0; max-width:1120px; color:#33322E; }
+.deck b { font-weight:600; }
+.meta { text-align:right; font-family:var(--num); font-size:11.5px; line-height:1.75; color:var(--muted);
+        letter-spacing:.06em; white-space:nowrap; padding-bottom:6px; }
+.meta strong { color:var(--ink); font-weight:600; letter-spacing:.12em; font-size:12.5px; }
+
+.kpis { display:flex; gap:26px; margin-top:38px; }
+.kpi { flex:1; border-top:2px solid var(--ink); padding-top:14px; }
+.kpi .lab { font-size:12px; color:var(--muted); letter-spacing:.04em; }
+.kpi .val { font-family:var(--num); font-size:44px; font-weight:600; line-height:1.12; margin-top:6px;
+            letter-spacing:-.015em; font-variant-numeric:tabular-nums; }
+.kpi .val small { font-size:20px; font-weight:500; letter-spacing:0; margin-left:2px; }
+.kpi .sub { font-size:11.5px; color:#4A463E; line-height:1.55; margin-top:7px; }
+
+section { margin-top:42px; }
+.sec-head { display:flex; align-items:baseline; gap:14px; border-bottom:1px solid var(--rule);
+            padding-bottom:9px; margin-bottom:16px; }
+.sec-no { font-family:var(--num); font-size:11.5px; letter-spacing:.16em; color:#B23A2B; font-weight:600; }
+.sec-head h2 { font-size:19px; font-weight:600; margin:0; letter-spacing:.01em; }
+.sec-head .aside { margin-left:auto; font-size:11.5px; color:var(--muted); font-family:var(--num); letter-spacing:.08em; }
+.split { display:flex; gap:24px; align-items:stretch; }
+.split > .panel { flex:1; min-width:0; display:flex; flex-direction:column; }
+.split > .panel > .note:last-child { margin-top:auto; padding-top:10px; }
+.panel h3 { font-size:14px; font-weight:600; margin:0 0 2px; }
+.panel .hint { font-size:11px; color:var(--muted); margin:0 0 4px; }
+.note { font-size:11.5px; line-height:1.65; color:var(--muted); margin:8px 0 0; }
+.note b { color:#3A362F; font-weight:600; }
+
+.chart { display:block; overflow:visible; }
+.chart text { font-family:var(--sans); }
+.grid { stroke:#E4DCCB; stroke-width:.8; }
+.grid.faint { stroke:#EDE7DA; stroke-dasharray:2 4; }
+.base { stroke:#B9AF9C; stroke-width:1; }
+.tick { font-size:10.5px; fill:#8C8577; font-variant-numeric:tabular-nums; }
+.axis-title { font-size:10.5px; fill:#8C8577; letter-spacing:.04em; }
+.mark { stroke:#B9AF9C; stroke-width:1; stroke-dasharray:3 5; }
+.mark-label { font-size:9.5px; fill:#8C8577; font-family:var(--num); }
+.leader { fill:none; stroke-width:.9; stroke-opacity:.45; }
+.end-label { font-size:13px; font-weight:600; letter-spacing:.01em; }
+.end-val { font-family:var(--num); font-size:12.5px; font-weight:600; font-variant-numeric:tabular-nums; }
+.anno { font-size:12.5px; fill:#4A463E; font-weight:600; }
+.anno-sub { font-size:11px; fill:#8C8577; }
+.line { fill:none; stroke-width:3; stroke-linecap:round; stroke-linejoin:round; }
+svg .line { stroke-width:3; }
+.dot { stroke:var(--paper); stroke-width:1; }
+.row-name { font-size:12.5px; font-weight:600; }
+.row-val { font-family:var(--num); font-size:13px; font-weight:600; fill:var(--ink); font-variant-numeric:tabular-nums; }
+.row-mult { font-family:var(--num); font-size:11.5px; fill:#726C61; font-variant-numeric:tabular-nums; }
+.track { stroke-width:2.6; stroke-opacity:.30; stroke-linecap:round; }
+.dot-out { fill:var(--paper); stroke:#9C9382; stroke-width:1.2; }
+.bubble-label { font-size:11.5px; font-weight:600; letter-spacing:.01em; }
+.enddot { stroke:var(--paper); stroke-width:1.4; }
+.accent-rule { stroke:#B23A2B; stroke-width:2.5; }
+.accent { fill:#B23A2B; font-weight:600; }
+.panel .sec-head h2 { font-size:15.5px; }
+.panel .sec-head .sec-no { font-size:10.5px; }
+.panel .sec-head .aside { font-size:10.5px; letter-spacing:.06em; }
+
+.cards { display:flex; gap:12px; }
+.card { flex:1; border-top:3px solid; padding-top:10px; }
+.card-name { font-size:12px; color:var(--muted); letter-spacing:.06em; }
+.card-val { font-family:var(--num); font-size:34px; font-weight:600; line-height:1.15; letter-spacing:-.01em;
+            font-variant-numeric:tabular-nums; }
+.card-delta { font-family:var(--num); font-size:11.5px; color:#6C675D; margin-top:1px; }
+.card-delta span { font-family:var(--sans); color:#9A9386; margin-left:4px; letter-spacing:.02em; }
+.card-delta.down { color:#B23A2B; font-weight:600; }
+.spark { display:block; margin-top:8px; overflow:visible; }
+.spark-tick { font-family:var(--num); font-size:8px; fill:#A9A193; }
+.spark-year { font-family:var(--num); font-size:8.5px; fill:#A9A193; }
+.card-period { font-size:10px; color:#9A9386; margin-top:2px; font-family:var(--num); letter-spacing:.04em; }
+
+.findings { border-top:1px solid var(--rule); }
+.find { display:flex; gap:14px; padding:12px 0 11px; border-bottom:1px solid var(--rule); }
+.find:last-child { border-bottom:none; }
+.find .fn { font-family:var(--num); font-size:11px; color:#B23A2B; font-weight:600; padding-top:4px; letter-spacing:.08em; }
+.find h4 { margin:0 0 4px; font-size:14.5px; font-weight:600; letter-spacing:.01em; }
+.find p { margin:0; font-size:12.5px; line-height:1.72; color:#3E3A33; }
+.find p b { font-weight:600; color:var(--ink); font-family:var(--num); font-size:12.5px; }
+
+footer { margin-top:38px; border-top:2px solid var(--ink); padding-top:12px;
+         display:flex; gap:40px; align-items:flex-start; }
+.src { flex:1; font-size:10px; line-height:1.72; color:#7E776A; }
+.src b { color:#3A362F; font-weight:600; }
+.stamp { font-family:var(--num); font-size:10px; color:#9A9386; text-align:right; letter-spacing:.08em; line-height:1.8; white-space:nowrap; }
+.line.c0{stroke:#1C2E4A} .dot.c0{fill:#1C2E4A}
+.line.c1{stroke:#46698C} .dot.c1{fill:#46698C}
+.line.c2{stroke:#8299B2} .dot.c2{fill:#8299B2}
+.line.c3{stroke:#2A9D8F} .dot.c3{fill:#2A9D8F}
+.line.c4{stroke:#7A1E1E} .dot.c4{fill:#7A1E1E}
+.line.c5{stroke:#B23A2B} .dot.c5{fill:#B23A2B}
+.line.c6{stroke:#E06A45} .dot.c6{fill:#E06A45}
+.line.c7{stroke:#D2952C} .dot.c7{fill:#D2952C}</style></head>
+<body><div class="page">
+
+<header>
+  <div class="masthead">
+    <div>
+      <div class="kicker"><span class="dot"></span>CITY GDP OBSERVATORY · 2000—2025</div>
+      <h1>八座城市，<em>一场重排</em></h1>
+    </div>
+    <div class="meta"><strong>8 CITIES / 9 SNAPSHOTS</strong><br>现价美元 · 世界银行年均汇率<br>区域 GDP / 首位度 / 人均 / 地均</div>
+  </div>
+  <p class="deck">京沪深合计 25 年把总量追到<b>纽约的 1.49 倍</b>；但人均仍只有纽约的 <b>1/5 上下</b>，北京地均更只有 <b>1/40</b>。<br>规模的重排已经发生，效率的重排还没有。</p>
+</header>
+
+<div class="kpis">
+  <div class="kpi"><div class="lab">京沪深合计 ÷ 纽约</div><div class="val">1.49<small>×</small></div>
+    <div class="sub">20,517 亿美元 vs 13,778 亿美元（2025 / 2024）</div></div>
+  <div class="kpi"><div class="lab">深圳 GDP · 2000→2025</div><div class="val">×19.9</div>
+    <div class="sub">年均复合 12.7%，八城最快</div></div>
+  <div class="kpi"><div class="lab">纽约人均 GDP（2024）</div><div class="val">16.3<small> 万美元</small></div>
+    <div class="sub">深圳的 5.7 倍；是香港的 3.0 倍</div></div>
+  <div class="kpi"><div class="lab">香港经济首位度</div><div class="val">2.2<small>%</small></div>
+    <div class="sub">2000 年为 14.0%，25 年下降 84%</div></div>
+</div>
+
+<section>
+  <div class="sec-head"><span class="sec-no">01</span><h2>总量：京沪深 25 年增长 13–20 倍，纽约、伦敦、香港约 2.5 倍</h2>
+    <span class="aside">区域 GDP · 亿美元</span></div>
+  <svg class="chart" viewBox="0 0 1372 500" width="1372" height="500" role="img" aria-label="八城 GDP 走势"><line class="base" x1="58" y1="466.0" x2="1210" y2="466.0"/><text class="tick" x="48" y="469.5" text-anchor="end">0</text><line class="grid" x1="58" y1="377.6" x2="1210" y2="377.6"/><text class="tick" x="48" y="381.1" text-anchor="end">3,000</text><line class="grid" x1="58" y1="289.2" x2="1210" y2="289.2"/><text class="tick" x="48" y="292.7" text-anchor="end">6,000</text><line class="grid" x1="58" y1="200.8" x2="1210" y2="200.8"/><text class="tick" x="48" y="204.3" text-anchor="end">9,000</text><line class="grid" x1="58" y1="112.4" x2="1210" y2="112.4"/><text class="tick" x="48" y="115.9" text-anchor="end">12,000</text><line class="grid" x1="58" y1="24.0" x2="1210" y2="24.0"/><text class="tick" x="48" y="27.5" text-anchor="end">15,000</text><line class="grid" x1="58.0" y1="24" x2="58.0" y2="466"/><text class="tick" x="58.0" y="484" text-anchor="middle">2000</text><line class="grid" x1="288.4" y1="24" x2="288.4" y2="466"/><text class="tick" x="288.4" y="484" text-anchor="middle">2005</text><line class="grid" x1="518.8" y1="24" x2="518.8" y2="466"/><text class="tick" x="518.8" y="484" text-anchor="middle">2010</text><line class="grid" x1="749.2" y1="24" x2="749.2" y2="466"/><text class="tick" x="749.2" y="484" text-anchor="middle">2015</text><line class="grid" x1="979.6" y1="24" x2="979.6" y2="466"/><text class="tick" x="979.6" y="484" text-anchor="middle">2020</text><line class="grid" x1="1210.0" y1="24" x2="1210.0" y2="466"/><text class="tick" x="1210.0" y="484" text-anchor="middle">2025</text><path class="line c0" d="M288.4,305.3 L518.8,272.8 L749.2,213.0 L979.6,156.1 L1071.8,104.9 L1117.8,86.7 L1163.9,60.0"/><circle class="dot c0" cx="288.4" cy="305.3" r="2.8"/><circle class="dot c0" cx="518.8" cy="272.8" r="2.8"/><circle class="dot c0" cx="749.2" cy="213.0" r="2.8"/><circle class="dot c0" cx="979.6" cy="156.1" r="2.8"/><circle class="dot c0" cx="1071.8" cy="104.9" r="2.8"/><circle class="dot c0" cx="1117.8" cy="86.7" r="2.8"/><circle class="dot c0" cx="1163.9" cy="60.0" r="2.8"/><circle class="enddot c0" cx="1163.9" cy="60.0" r="4.6"/><path class="line c1" d="M58.0,366.5 L288.4,313.3 L518.8,309.0 L749.2,270.0 L979.6,287.2 L1071.8,253.8 L1117.8,237.2 L1163.9,218.8"/><circle class="dot c1" cx="58.0" cy="366.5" r="2.8"/><circle class="dot c1" cx="288.4" cy="313.3" r="2.8"/><circle class="dot c1" cx="518.8" cy="309.0" r="2.8"/><circle class="dot c1" cx="749.2" cy="270.0" r="2.8"/><circle class="dot c1" cx="979.6" cy="287.2" r="2.8"/><circle class="dot c1" cx="1071.8" cy="253.8" r="2.8"/><circle class="dot c1" cx="1117.8" cy="237.2" r="2.8"/><circle class="dot c1" cx="1163.9" cy="218.8" r="2.8"/><circle class="enddot c1" cx="1163.9" cy="218.8" r="4.6"/><path class="line c2" d="M749.2,198.2 L979.6,165.2 L1071.8,196.5 L1117.8,203.8"/><circle class="dot c2" cx="749.2" cy="198.2" r="2.8"/><circle class="dot c2" cx="979.6" cy="165.2" r="2.8"/><circle class="dot c2" cx="1071.8" cy="196.5" r="2.8"/><circle class="dot c2" cx="1117.8" cy="203.8" r="2.8"/><circle class="enddot c2" cx="1117.8" cy="203.8" r="4.6"/><path class="line c3" d="M58.0,437.7 L288.4,428.3 L518.8,395.3 L749.2,375.2 L979.6,362.5 L1071.8,314.5 L1117.8,315.4 L1163.9,297.2 L1210.0,288.1"/><circle class="dot c3" cx="58.0" cy="437.7" r="2.8"/><circle class="dot c3" cx="288.4" cy="428.3" r="2.8"/><circle class="dot c3" cx="518.8" cy="395.3" r="2.8"/><circle class="dot c3" cx="749.2" cy="375.2" r="2.8"/><circle class="dot c3" cx="979.6" cy="362.5" r="2.8"/><circle class="dot c3" cx="1071.8" cy="314.5" r="2.8"/><circle class="dot c3" cx="1117.8" cy="315.4" r="2.8"/><circle class="dot c3" cx="1163.9" cy="297.2" r="2.8"/><circle class="dot c3" cx="1210.0" cy="288.1" r="2.8"/><circle class="enddot c3" cx="1210.0" cy="288.1" r="4.6"/><path class="line c4" d="M58.0,454.2 L288.4,439.7 L518.8,398.9 L749.2,342.8 L979.6,301.6 L1071.8,268.2 L1117.8,269.0 L1163.9,261.9 L1210.0,252.6"/><circle class="dot c4" cx="58.0" cy="454.2" r="2.8"/><circle class="dot c4" cx="288.4" cy="439.7" r="2.8"/><circle class="dot c4" cx="518.8" cy="398.9" r="2.8"/><circle class="dot c4" cx="749.2" cy="342.8" r="2.8"/><circle class="dot c4" cx="979.6" cy="301.6" r="2.8"/><circle class="dot c4" cx="1071.8" cy="268.2" r="2.8"/><circle class="dot c4" cx="1117.8" cy="269.0" r="2.8"/><circle class="dot c4" cx="1163.9" cy="261.9" r="2.8"/><circle class="dot c4" cx="1210.0" cy="252.6" r="2.8"/><circle class="enddot c4" cx="1210.0" cy="252.6" r="4.6"/><path class="line c5" d="M58.0,448.6 L288.4,432.2 L518.8,386.3 L749.2,334.4 L979.6,288.3 L1071.8,253.5 L1117.8,252.2 L1163.9,245.2 L1210.0,233.6"/><circle class="dot c5" cx="58.0" cy="448.6" r="2.8"/><circle class="dot c5" cx="288.4" cy="432.2" r="2.8"/><circle class="dot c5" cx="518.8" cy="386.3" r="2.8"/><circle class="dot c5" cx="749.2" cy="334.4" r="2.8"/><circle class="dot c5" cx="979.6" cy="288.3" r="2.8"/><circle class="dot c5" cx="1071.8" cy="253.5" r="2.8"/><circle class="dot c5" cx="1117.8" cy="252.2" r="2.8"/><circle class="dot c5" cx="1163.9" cy="245.2" r="2.8"/><circle class="dot c5" cx="1210.0" cy="233.6" r="2.8"/><circle class="enddot c5" cx="1210.0" cy="233.6" r="4.6"/><path class="line c6" d="M58.0,458.0 L288.4,447.6 L518.8,421.5 L749.2,377.6 L979.6,345.1 L1071.8,320.8 L1117.8,320.8 L1163.9,315.3 L1210.0,307.3"/><circle class="dot c6" cx="58.0" cy="458.0" r="2.8"/><circle class="dot c6" cx="288.4" cy="447.6" r="2.8"/><circle class="dot c6" cx="518.8" cy="421.5" r="2.8"/><circle class="dot c6" cx="749.2" cy="377.6" r="2.8"/><circle class="dot c6" cx="979.6" cy="345.1" r="2.8"/><circle class="dot c6" cx="1071.8" cy="320.8" r="2.8"/><circle class="dot c6" cx="1117.8" cy="320.8" r="2.8"/><circle class="dot c6" cx="1163.9" cy="315.3" r="2.8"/><circle class="dot c6" cx="1210.0" cy="307.3" r="2.8"/><circle class="enddot c6" cx="1210.0" cy="307.3" r="4.6"/><path class="line c7" d="M58.0,415.4 L288.4,412.5 L518.8,398.6 L749.2,374.8 L979.6,364.4 L1071.8,360.3 L1117.8,353.8 L1163.9,345.7 L1210.0,340.2"/><circle class="dot c7" cx="58.0" cy="415.4" r="2.8"/><circle class="dot c7" cx="288.4" cy="412.5" r="2.8"/><circle class="dot c7" cx="518.8" cy="398.6" r="2.8"/><circle class="dot c7" cx="749.2" cy="374.8" r="2.8"/><circle class="dot c7" cx="979.6" cy="364.4" r="2.8"/><circle class="dot c7" cx="1071.8" cy="360.3" r="2.8"/><circle class="dot c7" cx="1117.8" cy="353.8" r="2.8"/><circle class="dot c7" cx="1163.9" cy="345.7" r="2.8"/><circle class="dot c7" cx="1210.0" cy="340.2" r="2.8"/><circle class="enddot c7" cx="1210.0" cy="340.2" r="4.6"/><path class="leader" d="M1167.9,60.0 L1215.0,60.0 L1216.0,60.0" stroke="#1C2E4A"/><text class="end-label" x="1220" y="59.0" fill="#1C2E4A">纽约<tspan class="end-val" fill="#17181C"> 13,778</tspan></text><path class="leader" d="M1167.9,218.8 L1215.0,226.8 L1216.0,226.8" stroke="#46698C"/><text class="end-label" x="1220" y="225.8" fill="#46698C">伦敦<tspan class="end-val" fill="#17181C"> 8,388</tspan></text><path class="leader" d="M1121.8,203.8 L1215.0,203.8 L1216.0,203.8" stroke="#8299B2"/><text class="end-label" x="1220" y="202.8" fill="#8299B2">东京<tspan class="end-val" fill="#17181C"> 8,899</tspan></text><path class="leader" d="M1214.0,288.1 L1215.0,295.8 L1216.0,295.8" stroke="#2A9D8F"/><text class="end-label" x="1220" y="294.8" fill="#2A9D8F">新加坡<tspan class="end-val" fill="#17181C"> 6,039</tspan></text><path class="leader" d="M1214.0,252.6 L1215.0,272.8 L1216.0,272.8" stroke="#7A1E1E"/><text class="end-label" x="1220" y="271.8" fill="#7A1E1E">北京<tspan class="end-val" fill="#17181C"> 7,243</tspan></text><path class="leader" d="M1214.0,233.6 L1215.0,249.8 L1216.0,249.8" stroke="#B23A2B"/><text class="end-label" x="1220" y="248.8" fill="#B23A2B">上海<tspan class="end-val" fill="#17181C"> 7,887</tspan></text><path class="leader" d="M1214.0,307.3 L1215.0,318.8 L1216.0,318.8" stroke="#E06A45"/><text class="end-label" x="1220" y="317.8" fill="#E06A45">深圳<tspan class="end-val" fill="#17181C"> 5,387</tspan></text><path class="leader" d="M1214.0,340.2 L1215.0,341.8 L1216.0,341.8" stroke="#D2952C"/><text class="end-label" x="1220" y="340.8" fill="#D2952C">香港<tspan class="end-val" fill="#17181C"> 4,271</tspan></text><line class="accent-rule" x1="85.6" y1="47.6" x2="115.6" y2="47.6"/><text class="anno" x="111.6" y="49.0">京沪深合计 20,517 亿美元（2025）</text><text class="anno-sub" x="111.6" y="67.0">是纽约（2024 年 13,778 亿美元）的 <tspan class="accent">1.49 倍</tspan>；2005 年这一比值只有 0.49</text></svg>
+  <p class="note">按实际数据点连线，缺失年份不插补。纽约、伦敦最新为 2024 年，东京为 2023 年（日本财年），其余为 2025 年初步核算数；东京美元值 2020→2023 下降 12.8%，主要来自日元贬值。</p>
+</section>
+
+<section>
+  <div class="split">
+    <div class="panel">
+      <div class="sec-head"><span class="sec-no">02</span><h2>增长：19 年里深圳 ×8.2，伦敦 ×1.6</h2>
+        <span class="aside">○2005　●2024</span></div>
+      <svg class="chart" viewBox="0 0 676 396" width="676" height="396" role="img" aria-label="2005 到 2024 GDP 增长"><line class="grid" x1="64.0" y1="30" x2="64.0" y2="334"/><text class="tick" x="64.0" y="352" text-anchor="middle">0</text><line class="grid" x1="206.0" y1="30" x2="206.0" y2="334"/><text class="tick" x="206.0" y="352" text-anchor="middle">5,000</text><line class="grid" x1="348.0" y1="30" x2="348.0" y2="334"/><text class="tick" x="348.0" y="352" text-anchor="middle">10,000</text><line class="grid" x1="490.0" y1="30" x2="490.0" y2="334"/><text class="tick" x="490.0" y="352" text-anchor="middle">15,000</text><text class="row-name" x="0" y="57.3" fill="#1C2E4A">纽约</text><line class="track" x1="218.9" y1="53.3" x2="455.3" y2="53.3" stroke="#1C2E4A"/><circle class="dot-out" cx="218.9" cy="53.3" r="4.2"/><circle cx="455.3" cy="53.3" r="5.4" fill="#1C2E4A"/><text class="row-val" x="502" y="57.3">13,778</text><text class="row-mult" x="594" y="57.3">×2.53</text><text class="row-name" x="0" y="99.5" fill="#46698C">伦敦</text><line class="track" x1="211.2" y1="95.5" x2="302.2" y2="95.5" stroke="#46698C"/><circle class="dot-out" cx="211.2" cy="95.5" r="4.2"/><circle cx="302.2" cy="95.5" r="5.4" fill="#46698C"/><text class="row-val" x="502" y="99.5">8,388</text><text class="row-mult" x="594" y="99.5">×1.62</text><text class="row-name" x="0" y="141.8" fill="#B23A2B">上海</text><line class="track" x1="96.6" y1="137.8" x2="276.8" y2="137.8" stroke="#B23A2B"/><circle class="dot-out" cx="96.6" cy="137.8" r="4.2"/><circle cx="276.8" cy="137.8" r="5.4" fill="#B23A2B"/><text class="row-val" x="502" y="141.8">7,492</text><text class="row-mult" x="594" y="141.8">×6.53</text><text class="row-name" x="0" y="184.1" fill="#7A1E1E">北京</text><line class="track" x1="89.4" y1="180.1" x2="260.7" y2="180.1" stroke="#7A1E1E"/><circle class="dot-out" cx="89.4" cy="180.1" r="4.2"/><circle cx="260.7" cy="180.1" r="5.4" fill="#7A1E1E"/><text class="row-val" x="502" y="184.1">6,925</text><text class="row-mult" x="594" y="184.1">×7.74</text><text class="row-name" x="0" y="226.4" fill="#2A9D8F">新加坡</text><line class="track" x1="100.3" y1="222.4" x2="226.7" y2="222.4" stroke="#2A9D8F"/><circle class="dot-out" cx="100.3" cy="222.4" r="4.2"/><circle cx="226.7" cy="222.4" r="5.4" fill="#2A9D8F"/><text class="row-val" x="502" y="226.4">5,729</text><text class="row-mult" x="594" y="226.4">×4.48</text><text class="row-name" x="0" y="268.7" fill="#E06A45">深圳</text><line class="track" x1="81.7" y1="264.7" x2="209.2" y2="264.7" stroke="#E06A45"/><circle class="dot-out" cx="81.7" cy="264.7" r="4.2"/><circle cx="209.2" cy="264.7" r="5.4" fill="#E06A45"/><text class="row-val" x="502" y="268.7">5,113</text><text class="row-mult" x="594" y="268.7">×8.20</text><text class="row-name" x="0" y="311.0" fill="#D2952C">香港</text><line class="track" x1="115.6" y1="307.0" x2="180.0" y2="307.0" stroke="#D2952C"/><circle class="dot-out" cx="115.6" cy="307.0" r="4.2"/><circle cx="180.0" cy="307.0" r="5.4" fill="#D2952C"/><text class="row-val" x="502" y="311.0">4,083</text><text class="row-mult" x="594" y="311.0">×2.25</text></svg>
+      <p class="note"><b>绝对增量仍是纽约最大</b>（+8,325 亿美元）。京沪深的高倍数来自低起点：2005 年三市合计仅为纽约的 49%。东京缺 2005 年数据，未列入。</p>
+    </div>
+    <div class="panel">
+      <div class="sec-head"><span class="sec-no">03</span><h2>效率：人均差 5.5 倍，地均差 41 倍</h2>
+        <span class="aside">2023 · 八城可比</span></div>
+      <svg class="chart" viewBox="0 0 676 396" width="676" height="396" role="img" aria-label="人均 GDP 与地均 GDP"><line class="grid" x1="46" y1="305.9" x2="664" y2="305.9"/><text class="tick" x="38" y="309.4" text-anchor="end">0.5</text><line class="grid" x1="46" y1="255.7" x2="664" y2="255.7"/><text class="tick" x="38" y="259.2" text-anchor="end">1</text><line class="grid" x1="46" y1="205.4" x2="664" y2="205.4"/><text class="tick" x="38" y="208.9" text-anchor="end">2</text><line class="grid" x1="46" y1="138.9" x2="664" y2="138.9"/><text class="tick" x="38" y="142.4" text-anchor="end">5</text><line class="grid" x1="46" y1="88.7" x2="664" y2="88.7"/><text class="tick" x="38" y="92.2" text-anchor="end">10</text><line class="grid" x1="46" y1="38.4" x2="664" y2="38.4"/><text class="tick" x="38" y="41.9" text-anchor="end">20</text><line class="grid" x1="111.0" y1="14" x2="111.0" y2="348"/><text class="tick" x="111.0" y="365" text-anchor="middle">30,000</text><line class="grid" x1="259.9" y1="14" x2="259.9" y2="348"/><text class="tick" x="259.9" y="365" text-anchor="middle">50,000</text><line class="grid" x1="462.0" y1="14" x2="462.0" y2="348"/><text class="tick" x="462.0" y="365" text-anchor="middle">100,000</text><line class="grid" x1="580.1" y1="14" x2="580.1" y2="348"/><text class="tick" x="580.1" y="365" text-anchor="middle">150,000</text><text class="axis-title" x="664" y="380" text-anchor="end">人均 GDP（美元/人，对数）</text><text class="axis-title" x="46" y="12" text-anchor="start">地均 GDP（亿美元/km²，对数）</text><circle cx="586.7" cy="52.2" r="23.2" fill="#1C2E4A" fill-opacity="0.82" stroke="#F7F4EC" stroke-width="1.5"/><circle cx="327.9" cy="154.1" r="19.9" fill="#8299B2" fill-opacity="0.82" stroke="#F7F4EC" stroke-width="1.5"/><circle cx="419.0" cy="139.8" r="18.9" fill="#46698C" fill-opacity="0.82" stroke="#F7F4EC" stroke-width="1.5"/><circle cx="103.6" cy="245.9" r="18.4" fill="#B23A2B" fill-opacity="0.82" stroke="#F7F4EC" stroke-width="1.5"/><circle cx="116.7" cy="320.8" r="17.8" fill="#7A1E1E" fill-opacity="0.82" stroke="#F7F4EC" stroke-width="1.5"/><circle cx="419.3" cy="115.0" r="16.1" fill="#2A9D8F" fill-opacity="0.82" stroke="#F7F4EC" stroke-width="1.5"/><circle cx="88.8" cy="190.2" r="15.9" fill="#E06A45" fill-opacity="0.82" stroke="#F7F4EC" stroke-width="1.5"/><circle cx="263.0" cy="164.9" r="14.4" fill="#D2952C" fill-opacity="0.82" stroke="#F7F4EC" stroke-width="1.5"/><text class="bubble-label" x="552.7" y="56.2" text-anchor="end" fill="#1C2E4A">纽约</text><text class="bubble-label" x="389.0" y="129.8" text-anchor="end" fill="#46698C">伦敦</text><text class="bubble-label" x="446.3" y="113.0" text-anchor="start" fill="#2A9D8F">新加坡</text><text class="bubble-label" x="327.9" y="190.1" text-anchor="middle" fill="#8299B2">东京</text><text class="bubble-label" x="243.0" y="148.9" text-anchor="end" fill="#D2952C">香港</text><text class="bubble-label" x="128.6" y="250.9" text-anchor="start" fill="#B23A2B">上海</text><text class="bubble-label" x="141.7" y="325.8" text-anchor="start" fill="#7A1E1E">北京</text><text class="bubble-label" x="112.8" y="191.2" text-anchor="start" fill="#E06A45">深圳</text></svg>
+      <p class="note">气泡面积代表区域 GDP。京沪深挤在左下角：人均 3 万美元上下，地均全部低于香港；<b>纽约是唯一「人均 >15 万且地均 >15 亿美元/km²」的城市</b>。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-no">04</span><h2>首位度：只有香港在坠落，伦敦、东京稳在 20% 以上</h2>
+    <span class="aside">占本国 GDP · 0–25%</span></div>
+  <div class="split">
+    <div class="panel">
+      <div class="cards"><div class="card" style="border-top-color:#46698C"><div class="card-name">伦敦</div><div class="card-val">22.7%</div><div class="card-delta ">较 2000 年 +2.5pp</div><svg class="spark" viewBox="0 0 144 150" width="144" height="150"><line class="grid" x1="2" y1="138.0" x2="140" y2="138.0"/><path d="M2.0,138.0 2.0,32.9 L29.6,32.4 L57.2,27.1 L84.8,20.6 L112.4,22.2 L123.4,20.3 L129.0,19.9 L134.5,20.0 L134.5,138.0 Z" fill="#46698C" fill-opacity="0.09" stroke="none"/><path class="line" d="M2.0,32.9 L29.6,32.4 L57.2,27.1 L84.8,20.6 L112.4,22.2 L123.4,20.3 L129.0,19.9 L134.5,20.0" stroke="#46698C"/><circle cx="134.5" cy="20.0" r="3.4" fill="#46698C"/></svg><div class="card-period">2000 → 2024</div></div><div class="card" style="border-top-color:#8299B2"><div class="card-name">东京</div><div class="card-val">20.3%</div><div class="card-delta ">较 2015 年 +0.3pp</div><svg class="spark" viewBox="0 0 144 150" width="144" height="150"><line class="grid" x1="2" y1="138.0" x2="140" y2="138.0"/><path d="M84.8,138.0 84.8,33.8 L112.4,35.7 L123.4,31.1 L129.0,32.5 L129.0,138.0 Z" fill="#8299B2" fill-opacity="0.09" stroke="none"/><path class="line" d="M84.8,33.8 L112.4,35.7 L123.4,31.1 L129.0,32.5" stroke="#8299B2"/><circle cx="129.0" cy="32.5" r="3.4" fill="#8299B2"/></svg><div class="card-period">2015 → 2023</div></div><div class="card" style="border-top-color:#B23A2B"><div class="card-name">上海</div><div class="card-val">4.0%</div><div class="card-delta ">较 2000 年 −0.8pp</div><svg class="spark" viewBox="0 0 144 150" width="144" height="150"><line class="grid" x1="2" y1="138.0" x2="140" y2="138.0"/><path d="M2.0,138.0 2.0,113.0 L29.6,112.3 L57.2,115.3 L84.8,117.4 L112.4,117.1 L123.4,117.5 L129.0,117.3 L134.5,117.2 L140.0,117.0 L140.0,138.0 Z" fill="#B23A2B" fill-opacity="0.09" stroke="none"/><path class="line" d="M2.0,113.0 L29.6,112.3 L57.2,115.3 L84.8,117.4 L112.4,117.1 L123.4,117.5 L129.0,117.3 L134.5,117.2 L140.0,117.0" stroke="#B23A2B"/><circle cx="140.0" cy="117.0" r="3.4" fill="#B23A2B"/></svg><div class="card-period">2000 → 2025</div></div><div class="card" style="border-top-color:#D2952C"><div class="card-name">香港</div><div class="card-val">2.2%</div><div class="card-delta down">较 2000 年 −84%</div><svg class="spark" viewBox="0 0 144 150" width="144" height="150"><line class="grid" x1="2" y1="138.0" x2="140" y2="138.0"/><path d="M2.0,138.0 2.0,65.1 L29.6,97.3 L57.2,118.8 L84.8,123.7 L112.4,126.0 L123.4,127.8 L129.0,127.2 L134.5,126.7 L140.0,126.6 L140.0,138.0 Z" fill="#D2952C" fill-opacity="0.09" stroke="none"/><path class="line" d="M2.0,65.1 L29.6,97.3 L57.2,118.8 L84.8,123.7 L112.4,126.0 L123.4,127.8 L129.0,127.2 L134.5,126.7 L140.0,126.6" stroke="#D2952C"/><circle cx="140.0" cy="126.6" r="3.4" fill="#D2952C"/></svg><div class="card-period">2000 → 2025</div></div></div>
+      <p class="note">新加坡为城市国家，首位度恒为 100%。北京 3.7%、深圳 2.8%；京沪深合计仅占中国 GDP 的 10.5%。</p>
+    </div>
+    <div class="panel">
+      <div class="findings">
+        <div class="find"><span class="fn">01</span><div><h4>总量超车靠速度，不靠体量</h4>
+          <p>2025 年上海 7,887 亿美元，已达伦敦（2024）的 <b>94%</b>；深圳 <b>5,387</b> 亿美元，比香港高 26%。而 2000 年，香港还是上海的 2.9 倍、深圳的 6.3 倍。</p></div></div>
+        <div class="find"><span class="fn">02</span><div><h4>人均在收敛，地均没有</h4>
+          <p>深圳人均从 2000 年仅香港的 <b>16%</b> 追到 2025 年的 <b>52%</b>；但纽约地均产出仍是北京的 <b>41 倍</b>（2023）——北京的「低密度」是面积口径的结果，不等于土地效率高。</p></div></div>
+        <div class="find"><span class="fn">03</span><div><h4>首位度是一道分母题</h4>
+          <p>香港占比从 14.0% 跌到 2.2%，但同期香港 GDP 仍增长 <b>2.5 倍</b>；变化来自中国 GDP 增长约 16 倍。上海占全国的比重也从 4.8% 降到 4.0%：城市跑得快，国家跑得更快。</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="src"><b>口径</b> 现价美元，按世界银行年度平均官方汇率折算；城市边界：纽约=五县合计，伦敦=ITL1，东京=都全域，新加坡=全国，京沪深=全市，香港=全境。东京为日本财年（按起始年对齐）。
+    <br><b>缺失</b> 纽约 2000、2025 年，东京 2000/2005/2010/2024/2025 年无数据，图中不插补。<b>来源</b> 世界银行 WDI · 美国 BEA · 英国 ONS · 东京都《都民経済計算》· 新加坡 SingStat · 香港政府统计处 · 北京/上海/深圳统计局。</div>
+  <div class="stamp">制图 2026-10<br>数据版本 2026-10-20</div>
+</footer>
+
+</div></body></html>
